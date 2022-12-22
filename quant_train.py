@@ -198,10 +198,10 @@ def main():
             decay=args.model_ema_decay,
             device='cpu' if args.model_ema_force_cpu else '',
             resume='')
-
+        
+    args.min_lr = args.lr / 15
     optimizer = create_optimizer(args, model)
     loss_scaler = NativeScaler()
-
     lr_scheduler, _ = create_scheduler(args, optimizer)
 
     if mixup_active:
