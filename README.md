@@ -23,7 +23,7 @@ cd I-ViT
 - You can quantize and fine-tune a single model using the following command:
 
 ```bash
-python test_quant.py [--model] [--data] [--epochs] [--lr]
+python quant_train.py [--model] [--data] [--epochs] [--lr]
 
 optional arguments:
 --model: Model architecture, the choises can be: 
