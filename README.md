@@ -7,7 +7,8 @@
 This repository contains the official implementation for the paper
 *["I-ViT: Integer-only Quantization for Efficient Vision Transformer Inference"](https://arxiv.org/abs/2207.01405).*  To the best of our knowledge, this is the first work on integer-only quantization for vision transformers. 
 
-Below are instructions of Pytorch code to reproduce the accuracy results of quantization-aware training (QAT). The TVM deployment project for reproducing latency results is coming soon.
+Below are instructions of Pytorch code to reproduce the accuracy results of quantization-aware training (QAT). [**TVM benchmark**](https://github.com/zkkli/I-ViT/tree/main/TVM_benchmark)
+is the TVM deployment project for reproducing latency results.
 
 ## Installation
 
