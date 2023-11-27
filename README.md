@@ -59,10 +59,11 @@ Below are the Top-1 (%) accuracy results of our proposed I-ViT that you should g
 We appreciate it if you would please cite the following paper if you found the implementation useful for your work:
 
 ```bash
-@article{li2022ivit,
-  title={I-ViT: integer-only quantization for efficient vision transformer inference},
+@inproceedings{li2023vit,
+  title={I-vit: Integer-only quantization for efficient vision transformer inference},
   author={Li, Zhikai and Gu, Qingyi},
-  journal={arXiv preprint arXiv:2207.01405},
-  year={2022}
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={17065--17075},
+  year={2023}
 }
 ```
