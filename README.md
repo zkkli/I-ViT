@@ -11,7 +11,7 @@ Below are instructions of Pytorch code to reproduce the accuracy results of quan
 is the TVM deployment project for reproducing latency results.
 
 ## Installation
-
+- Tvm version is recommended to be 0.9.dev0.
 - **To install I-ViT** and develop locally:
 
 ```bash
