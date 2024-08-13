@@ -1,11 +1,14 @@
 """Initializer of parameters."""
+
 import numpy as np
 
 import tvm
 from tvm import relay
 
+
 class Initializer(object):
     """The base class of an initializer."""
+
     def __init__(self, **kwargs):
         self._kwargs = kwargs
 
@@ -18,21 +21,21 @@ class Initializer(object):
         arr : NDArray
             The array to be initialized.
         """
-        if desc.endswith('weight'):
+        if desc.endswith("weight"):
             self._init_weight(desc, arr)
-        elif desc.endswith('bias'):
+        elif desc.endswith("bias"):
             self._init_bias(desc, arr)
-        elif desc.endswith('gamma'):
+        elif desc.endswith("gamma"):
             self._init_gamma(desc, arr)
-        elif desc.endswith('beta'):
+        elif desc.endswith("beta"):
             self._init_beta(desc, arr)
-        elif desc.endswith('mean'):
+        elif desc.endswith("mean"):
             self._init_mean(desc, arr)
-        elif desc.endswith('var'):
+        elif desc.endswith("var"):
             self._init_var(desc, arr)
-        elif desc.endswith('scale'):
+        elif desc.endswith("scale"):
             self._init_scale(desc, arr)
-        elif desc.endswith('shift'):
+        elif desc.endswith("shift"):
             self._init_shift(desc, arr)
         else:
             self._init_default(desc, arr)
@@ -64,10 +67,13 @@ class Initializer(object):
 
     def _init_default(self, name, _):
         raise ValueError(
-            'Unknown initialization pattern for %s. ' \
-            'Default initialization is now limited to '\
-            '"weight", "bias", "gamma" (1.0), and "beta" (0.0).' \
-            'Please use mx.sym.Variable(init=mx.init.*) to set initialization pattern' % name)
+            "Unknown initialization pattern for %s. "
+            "Default initialization is now limited to "
+            '"weight", "bias", "gamma" (1.0), and "beta" (0.0).'
+            "Please use mx.sym.Variable(init=mx.init.*) to set initialization pattern"
+            % name
+        )
+
 
 class Xavier(Initializer):
     """ "Xavier" initialization for weights
@@ -80,24 +86,27 @@ class Xavier(Initializer):
     magnitude: float, optional
         Scale of random number.
     """
+
     def __init__(self, rnd_type="uniform", factor_type="avg", magnitude=3):
-        super(Xavier, self).__init__(rnd_type=rnd_type,
-                                     factor_type=factor_type,
-                                     magnitude=magnitude)
+        super(Xavier, self).__init__(
+            rnd_type=rnd_type, factor_type=factor_type, magnitude=magnitude
+        )
         self.rnd_type = rnd_type
         self.factor_type = factor_type
         self.magnitude = float(magnitude)
 
     def _init_weight(self, name, arr):
         shape = arr.shape
-        hw_scale = 1.
+        hw_scale = 1.0
         if len(shape) < 2:
-            raise ValueError('Xavier initializer cannot be applied to vector {0}. It requires at'
-                             ' least 2D.'.format(name))
+            raise ValueError(
+                "Xavier initializer cannot be applied to vector {0}. It requires at"
+                " least 2D.".format(name)
+            )
         if len(shape) > 2:
             hw_scale = np.prod(shape[2:])
         fan_in, fan_out = shape[1] * hw_scale, shape[0] * hw_scale
-        factor = 1.
+        factor = 1.0
         if self.factor_type == "avg":
             factor = (fan_in + fan_out) / 2.0
         elif self.factor_type == "in":
@@ -115,16 +124,17 @@ class Xavier(Initializer):
         else:
             raise ValueError("Unknown random type")
 
+
 class QuantizeInitializer(Initializer):
     def _init_weight(self, name, arr):
         if arr.dtype == np.float32:
-            arr[:] = np.random.uniform(-1., 1., size=arr.shape)
+            arr[:] = np.random.uniform(-1.0, 1.0, size=arr.shape)
         elif arr.dtype == np.int8:
             arr[:] = np.random.randint(-127, 128, size=arr.shape)
         elif arr.dtype == np.uint8:
             arr[:] = np.random.randint(0, 256, size=arr.shape)
         elif arr.dtype == np.int32:
-            arr[:] = np.random.randint(-2**31, 2**31, size=arr.shape)
+            arr[:] = np.random.randint(-(2**31), 2**31, size=arr.shape)
         else:
             raise ValueError("Unknown random type %s" % (arr.dtype))
 
@@ -132,7 +142,7 @@ class QuantizeInitializer(Initializer):
         if arr.dtype == np.int32:
             arr[:] = np.random.randint(-200, 200, size=arr.shape)
         elif arr.dtype == np.float32:
-            arr[:] = np.random.uniform(-1., 1., size=arr.shape)
+            arr[:] = np.random.uniform(-1.0, 1.0, size=arr.shape)
         else:
             raise ValueError("Unknown random type %s" % (arr.dtype))
 
@@ -141,6 +151,7 @@ class QuantizeInitializer(Initializer):
 
     def _init_shift(self, _, arr):
         arr[:] = np.random.randint(-256, 256, size=arr.shape)
+
 
 def create_workload(net, initializer=None, seed=0):
     """Helper function to create benchmark image classification workload.
@@ -161,8 +172,7 @@ def create_workload(net, initializer=None, seed=0):
     """
     mod = tvm.IRModule.from_expr(net)
     mod = relay.transform.InferType()(mod)
-    shape_dict = {
-        v.name_hint : v.checked_type for v in mod["main"].params}
+    shape_dict = {v.name_hint: v.checked_type for v in mod["main"].params}
     np.random.seed(seed)
     initializer = initializer if initializer else Xavier()
     params = {}
@@ -170,14 +180,14 @@ def create_workload(net, initializer=None, seed=0):
         if k == "data":
             continue
 
-        if v.dtype == 'int4' or v.dtype == 'uint4':
+        if v.dtype == "int4" or v.dtype == "uint4":
             pack_shape = list(v.concrete_shape)
             pack_shape[-1] = pack_shape[-1] // 8
-            init_value = np.zeros(pack_shape).astype('int32')
+            init_value = np.zeros(pack_shape).astype("int32")
         else:
             init_value = np.zeros(v.concrete_shape).astype(v.dtype)
 
         initializer(k, init_value)
-        params[k] = tvm.nd.array(init_value) #, ctx=tvm.cpu(0)
+        params[k] = tvm.nd.array(init_value)  # , ctx=tvm.cpu(0)
 
     return mod, params

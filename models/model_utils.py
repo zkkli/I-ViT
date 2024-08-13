@@ -38,4 +38,3 @@ def unfreeze_model(model):
             mod = getattr(model, attr)
             if isinstance(mod, nn.Module):
                 unfreeze_model(mod)
-

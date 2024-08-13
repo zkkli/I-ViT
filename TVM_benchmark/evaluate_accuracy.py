@@ -17,22 +17,31 @@ import convert_model
 
 parser = argparse.ArgumentParser(description="TVM-Accuracy")
 
-parser.add_argument("--model-name", default='deit_tiny_patch16_224',
-                    choices=['deit_tiny_patch16_224',
-                             'deit_small_patch16_224',
-                             'deit_base_patch16_224'],
-                    help="model fullname")
-parser.add_argument("--model-path", default='',
-                    help="saved checkpoint path in QAT (checkpoint.pth.tar)")
-parser.add_argument("--params-path", default='',
-                    help="saved parameters path in convert_model.py (params.npy)")
+parser.add_argument(
+    "--model-name",
+    default="deit_tiny_patch16_224",
+    choices=[
+        "deit_tiny_patch16_224",
+        "deit_small_patch16_224",
+        "deit_base_patch16_224",
+    ],
+    help="model fullname",
+)
+parser.add_argument(
+    "--model-path", default="", help="saved checkpoint path in QAT (checkpoint.pth.tar)"
+)
+parser.add_argument(
+    "--params-path",
+    default="",
+    help="saved parameters path in convert_model.py (params.npy)",
+)
 
 
 def main():
     args = parser.parse_args()
 
     # Set target device
-    target = 'cuda'
+    target = "cuda"
 
     # Load params
     model = torch.load(args.model_path)
@@ -55,7 +64,9 @@ def main():
     )
     img = my_preprocess(img)
     input_image = np.expand_dims(img, 0)
-    input_image = input_image / QuantizeContext.qconfig_dict['qconfig_embed_conv'].input_scale
+    input_image = (
+        input_image / QuantizeContext.qconfig_dict["qconfig_embed_conv"].input_scale
+    )
     input_image = np.clip(input_image, -128, 127)
     input_image = np.round(input_image)
     input_image = input_image.astype("int8")
@@ -67,23 +78,27 @@ def main():
     image_shape = (3, 224, 224)
     data_layout = "NCHW"
     kernel_layout = "OIHW"
-    func, params = build_model.get_workload(name=name,
-                                            batch_size=batch_size,
-                                            image_shape=image_shape,
-                                            dtype="int8",
-                                            data_layout=data_layout,
-                                            kernel_layout=kernel_layout)
+    func, params = build_model.get_workload(
+        name=name,
+        batch_size=batch_size,
+        image_shape=image_shape,
+        dtype="int8",
+        data_layout=data_layout,
+        kernel_layout=kernel_layout,
+    )
 
     # Build model
     pretrained_params = {**pretrained_params}
     with tvm.transform.PassContext(opt_level=3):
         lib = relay.build(func, target=target, params=pretrained_params)
 
-    runtime = tvm.contrib.graph_executor.GraphModule(lib["default"](tvm.device(target, 0)))
+    runtime = tvm.contrib.graph_executor.GraphModule(
+        lib["default"](tvm.device(target, 0))
+    )
 
     # Run model
     input_data = np.repeat(input_image, batch_size, axis=0)
-    runtime.set_input('data', input_data)
+    runtime.set_input("data", input_data)
     runtime.run()
 
     tvm_result = runtime.get_output(0).numpy()

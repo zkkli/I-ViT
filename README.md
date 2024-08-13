@@ -45,14 +45,14 @@ python quant_train.py --model deit_tiny --data <YOUR_DATA_DIR> --epochs 30 --lr 
 Below are the Top-1 (%) accuracy results of our proposed I-ViT that you should get on ImageNet dataset.
 
 | Model  | FP32  | INT8 (I-ViT) | Diff. |
-|:------:|:-----:|:------------:|:-----:|
-| ViT-S  | 81.39 | 81.27        | -0.12 |
-| ViT-B  | 84.53 | 84.76        | +0.23 |
-| DeiT-T | 72.21 | 72.24        | +0.03 |
-| DeiT-S | 79.85 | 80.12        | +0.27 |
-| DeiT-B | 81.85 | 81.74        | -0.11 |
-| Swin-T | 81.35 | 81.50        | +0.15 |
-| Swin-S | 83.20 | 83.01        | -0.19 |
+| :----: | :---: | :----------: | :---: |
+| ViT-S  | 81.39 |    81.27     | -0.12 |
+| ViT-B  | 84.53 |    84.76     | +0.23 |
+| DeiT-T | 72.21 |    72.24     | +0.03 |
+| DeiT-S | 79.85 |    80.12     | +0.27 |
+| DeiT-B | 81.85 |    81.74     | -0.11 |
+| Swin-T | 81.35 |    81.50     | +0.15 |
+| Swin-S | 83.20 |    83.01     | -0.19 |
 
 ## Citation
 

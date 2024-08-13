@@ -9,6 +9,8 @@ import torch.nn.functional as F
 
 from .quantization_utils import QuantLinear, QuantAct, QuantConv2d, IntGELU
 
+from torch import Tensor
+
 
 def _ntuple(n):
     def parse(x):
@@ -95,8 +97,7 @@ def drop_path(x, drop_prob: float = 0.0, training: bool = False):
     shape = (x.shape[0],) + (1,) * (
         x.ndim - 1
     )  # work with diff dim tensors, not just 2D ConvNets
-    random_tensor = keep_prob + \
-        torch.rand(shape, dtype=x.dtype, device=x.device)
+    random_tensor = keep_prob + torch.rand(shape, dtype=x.dtype, device=x.device)
     random_tensor.floor_()  # binarize
     output = x.div(keep_prob) * random_tensor
     return output
@@ -115,27 +116,22 @@ class DropPath(nn.Module):
 
 class Mlp(nn.Module):
     def __init__(
-            self,
-            in_features,
-            hidden_features=None,
-            out_features=None,
-            act_layer=IntGELU,
-            drop=0.0):
+        self,
+        in_features,
+        hidden_features=None,
+        out_features=None,
+        act_layer=IntGELU,
+        drop=0.0,
+    ):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         # self.fc1 = nn.Linear(in_features, hidden_features)
-        self.fc1 = QuantLinear(
-            in_features,
-            hidden_features
-        )
+        self.fc1 = QuantLinear(in_features, hidden_features)
         self.act = act_layer()
         self.qact1 = QuantAct()
         # self.fc2 = nn.Linear(hidden_features, out_features)
-        self.fc2 = QuantLinear(
-            hidden_features,
-            out_features
-        )
+        self.fc2 = QuantLinear(hidden_features, out_features)
         self.qact2 = QuantAct(16)
         self.drop = nn.Dropout(drop)
 
@@ -156,15 +152,16 @@ class Mlp(nn.Module):
 class PatchEmbed(nn.Module):
     """Image to Patch Embedding"""
 
-    def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768, norm_layer=None):
+    def __init__(
+        self, img_size=224, patch_size=16, in_chans=3, embed_dim=768, norm_layer=None
+    ):
         super().__init__()
         img_size = to_2tuple(img_size)
         patch_size = to_2tuple(patch_size)
         self.img_size = img_size
         self.patch_size = patch_size
 
-        self.grid_size = (img_size[0] // patch_size[0],
-                          img_size[1] // patch_size[1])
+        self.grid_size = (img_size[0] // patch_size[0], img_size[1] // patch_size[1])
         self.num_patches = self.grid_size[0] * self.grid_size[1]
 
         self.norm_layer = norm_layer
@@ -180,7 +177,6 @@ class PatchEmbed(nn.Module):
             self.norm = norm_layer(embed_dim)
         self.qact = QuantAct(16)
 
-
     def forward(self, x, act_scaling_factor):
         B, C, H, W = x.shape
         # FIXME look at relaxing size constraints
@@ -194,4 +190,3 @@ class PatchEmbed(nn.Module):
             x, act_scaling_factor = self.norm(x, act_scaling_factor)
         x, act_scaling_factor = self.qact(x, act_scaling_factor)
         return x, act_scaling_factor
-

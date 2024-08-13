@@ -45,7 +45,7 @@ def linear_quantize(input, scale, zero_point, is_weight):
             raise NotImplementedError
 
     # quantized = float / scale + zero_point
-    return torch.round(1. / scale * input + zero_point)
+    return torch.round(1.0 / scale * input + zero_point)
 
 
 def symmetric_linear_quantization_params(num_bits, min_val, max_val):
@@ -85,11 +85,11 @@ class SymmetricQuantFunction(Function):
 
         scale = specified_scale
 
-        zero_point = torch.tensor(0.).cuda()
+        zero_point = torch.tensor(0.0).cuda()
 
         n = 2 ** (k - 1) - 1
         new_quant_x = linear_quantize(x, scale, zero_point, is_weight=is_weight)
-        new_quant_x = torch.clamp(new_quant_x, -n-1, n)
+        new_quant_x = torch.clamp(new_quant_x, -n - 1, n)
 
         ctx.scale = scale
         ctx.is_weight = is_weight
@@ -164,15 +164,19 @@ def batch_frexp(inputs, max_bit=31):
     output_m, output_e = np.frexp(inputs.cpu().numpy())
     tmp_m = []
     for m in output_m:
-        int_m_shifted = int(Decimal(m * (2 ** max_bit)).quantize(Decimal('1'),
-                                                                 rounding=decimal.ROUND_HALF_UP))
+        int_m_shifted = int(
+            Decimal(m * (2**max_bit)).quantize(
+                Decimal("1"), rounding=decimal.ROUND_HALF_UP
+            )
+        )
         tmp_m.append(int_m_shifted)
     output_m = np.array(tmp_m)
 
     output_e = float(max_bit) - output_e
 
-    return torch.from_numpy(output_m).cuda().view(shape_of_input), \
-           torch.from_numpy(output_e).cuda().view(shape_of_input)
+    return torch.from_numpy(output_m).cuda().view(shape_of_input), torch.from_numpy(
+        output_e
+    ).cuda().view(shape_of_input)
 
 
 class fixedpoint_mul(Function):
@@ -190,9 +194,16 @@ class fixedpoint_mul(Function):
     """
 
     @staticmethod
-    def forward(ctx, pre_act, pre_act_scaling_factor,
-                bit_num, quant_mode, z_scaling_factor,
-                identity=None, identity_scaling_factor=None):
+    def forward(
+        ctx,
+        pre_act,
+        pre_act_scaling_factor,
+        bit_num,
+        quant_mode,
+        z_scaling_factor,
+        identity=None,
+        identity_scaling_factor=None,
+    ):
 
         # TODO(Sehoon): May require other type of reshape
         if len(pre_act.shape) == 2:
@@ -205,10 +216,10 @@ class fixedpoint_mul(Function):
             raise NotImplementedError
         ctx.identity = identity
 
-        if quant_mode == 'symmetric':
+        if quant_mode == "symmetric":
             n = 2 ** (bit_num - 1) - 1
         else:
-            n = 2 ** bit_num - 1
+            n = 2**bit_num - 1
 
         with torch.no_grad():
             pre_act_scaling_factor = reshape(pre_act_scaling_factor)
@@ -227,7 +238,7 @@ class fixedpoint_mul(Function):
 
             m, e = batch_frexp(new_scale)
             output = z_int.type(torch.double) * m.type(torch.double)
-            output = torch.round(output / (2.0 ** e))
+            output = torch.round(output / (2.0**e))
 
             if identity is not None:
                 # needs addition of identity activation
@@ -240,13 +251,13 @@ class fixedpoint_mul(Function):
 
                 m1, e1 = batch_frexp(new_scale)
                 output1 = wx_int.type(torch.double) * m1.type(torch.double)
-                output1 = torch.round(output1 / (2.0 ** e1))
+                output1 = torch.round(output1 / (2.0**e1))
 
                 output = output1 + output
 
             if bit_num in [4, 8, 16, 32]:
-                if quant_mode == 'symmetric':
-                    return torch.clamp(output.type(torch.float), -n-1, n)
+                if quant_mode == "symmetric":
+                    return torch.clamp(output.type(torch.float), -n - 1, n)
                 else:
                     return torch.clamp(output.type(torch.float), 0, n)
             else:
@@ -257,5 +268,12 @@ class fixedpoint_mul(Function):
         identity_grad = None
         if ctx.identity is not None:
             identity_grad = grad_output.clone() / ctx.z_scaling_factor
-        return grad_output.clone() / ctx.z_scaling_factor, None, None, None, None, \
-               identity_grad, None
+        return (
+            grad_output.clone() / ctx.z_scaling_factor,
+            None,
+            None,
+            None,
+            None,
+            identity_grad,
+            None,
+        )

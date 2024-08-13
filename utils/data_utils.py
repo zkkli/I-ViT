@@ -22,7 +22,8 @@ def dataloader(args):
 
         # Data
         data_loader_train = torch.utils.data.DataLoader(
-            dataset_train, sampler=sampler_train,
+            dataset_train,
+            sampler=sampler_train,
             batch_size=args.batch_size,
             num_workers=args.num_workers,
             pin_memory=args.pin_mem,
@@ -30,11 +31,12 @@ def dataloader(args):
         )
 
         data_loader_val = torch.utils.data.DataLoader(
-            dataset_val, sampler=sampler_val,
+            dataset_val,
+            sampler=sampler_val,
             batch_size=int(1.5 * args.batch_size),
             num_workers=args.num_workers,
             pin_memory=args.pin_mem,
-            drop_last=False
+            drop_last=False,
         )
     else:
         raise NotImplementedError
@@ -45,11 +47,11 @@ def dataloader(args):
 def build_dataset(is_train, args):
     transform = build_transform(is_train, args)
 
-    if args.data_set == 'CIFAR':
+    if args.data_set == "CIFAR":
         dataset = datasets.CIFAR100(args.data_path, train=is_train, transform=transform)
         nb_classes = 100
-    elif args.data_set == 'IMNET':
-        root = os.path.join(args.data, 'train' if is_train else 'val')
+    elif args.data_set == "IMNET":
+        root = os.path.join(args.data, "train" if is_train else "val")
         dataset = datasets.ImageFolder(root, transform=transform)
         nb_classes = 1000
     else:
@@ -75,15 +77,16 @@ def build_transform(is_train, args):
         if not resize_im:
             # replace RandomResizedCropAndInterpolation with
             # RandomCrop
-            transform.transforms[0] = transforms.RandomCrop(
-                args.input_size, padding=4)
+            transform.transforms[0] = transforms.RandomCrop(args.input_size, padding=4)
         return transform
 
     t = []
     if resize_im:
         size = int((256 / 224) * args.input_size)
         t.append(
-            transforms.Resize(size, interpolation=3),  # to maintain same ratio w.r.t. 224 images
+            transforms.Resize(
+                size, interpolation=3
+            ),  # to maintain same ratio w.r.t. 224 images
         )
         t.append(transforms.CenterCrop(args.input_size))
 

@@ -13,7 +13,9 @@ class RASampler(torch.utils.data.Sampler):
     Heavily based on torch.utils.data.DistributedSampler
     """
 
-    def __init__(self, dataset, num_replicas=None, rank=None, shuffle=True, num_repeats: int = 3):
+    def __init__(
+        self, dataset, num_replicas=None, rank=None, shuffle=True, num_repeats: int = 3
+    ):
         if num_replicas is None:
             if not dist.is_available():
                 raise RuntimeError("Requires distributed package to be available")
@@ -29,10 +31,14 @@ class RASampler(torch.utils.data.Sampler):
         self.rank = rank
         self.num_repeats = num_repeats
         self.epoch = 0
-        self.num_samples = int(math.ceil(len(self.dataset) * self.num_repeats / self.num_replicas))
+        self.num_samples = int(
+            math.ceil(len(self.dataset) * self.num_repeats / self.num_replicas)
+        )
         self.total_size = self.num_samples * self.num_replicas
         # self.num_selected_samples = int(math.ceil(len(self.dataset) / self.num_replicas))
-        self.num_selected_samples = int(math.floor(len(self.dataset) // 256 * 256 / self.num_replicas))
+        self.num_selected_samples = int(
+            math.floor(len(self.dataset) // 256 * 256 / self.num_replicas)
+        )
         self.shuffle = shuffle
 
     def __iter__(self):
@@ -45,18 +51,20 @@ class RASampler(torch.utils.data.Sampler):
             indices = torch.arange(start=0, end=len(self.dataset))
 
         # add extra samples to make it evenly divisible
-        indices = torch.repeat_interleave(indices, repeats=self.num_repeats, dim=0).tolist()
+        indices = torch.repeat_interleave(
+            indices, repeats=self.num_repeats, dim=0
+        ).tolist()
         padding_size: int = self.total_size - len(indices)
         if padding_size > 0:
             indices += indices[:padding_size]
         assert len(indices) == self.total_size
 
         # subsample
-        indices = indices[self.rank:self.total_size:self.num_replicas]
+        indices = indices[self.rank : self.total_size : self.num_replicas]
         assert len(indices) == self.num_samples
 
-        return iter(indices[:self.num_selected_samples])
-        #return iter(indices)
+        return iter(indices[: self.num_selected_samples])
+        # return iter(indices)
 
     def __len__(self):
         return self.num_selected_samples
