@@ -12,6 +12,7 @@ is the TVM deployment project for reproducing latency results.
 
 ## Installation
 - TVM version is recommended to be 0.9.dev0.
+- Timm version is recommended to be 0.4.12.
 - **To install I-ViT** and develop locally:
 
 ```bash
