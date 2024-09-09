@@ -636,16 +636,7 @@ class Log2_2x_Quantizer_int(nn.Module):
         #     -35,  -30,  -25,  -20,  -15,  -10,    0], device='cuda:0',
         # dtype=torch.int32)
 
-        # # [3] asymm quant-dequant
-        # s_tmp = (x_int_log_q.max() - x_int_log_q.min()) / (self.n_levels - 1)
-        # zp_tmp = -(x_int_log_q.min() / s_tmp).round()
-        # asme_quant = ((x_int_log_q / s_tmp).round() + zp_tmp).clamp(
-        #     0, self.n_levels - 1
-        # )
-        # asme_dequant = (asme_quant - zp_tmp) * s_tmp
-        # print(asme_dequant.unique().numel(), asme_dequant.unique())
-
-        # [4]
+        # [3] log dequantization
         x_int_log_dq = self.int_log_dequant_10x(x_int_log_q)
         # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
         # 31 tensor([1.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00, 8.0000e+00,
@@ -664,7 +655,7 @@ class Log2_2x_Quantizer_int(nn.Module):
         #         6.1430e+03, 8.1910e+03, 1.2287e+04, 1.6383e+04, 2.4575e+04, 3.2767e+04,
         #         4.9151e+04], device='cuda:0')
 
-        # [5] [0, 255]
+        # [4] [0, 255]
         div = x_int_log_dq.max() // 255
         x_int_log_dq = x_int_log_dq // div
 
