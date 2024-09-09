@@ -44,6 +44,8 @@ def linear_quantize(input, scale, zero_point, is_weight):
         else:
             raise NotImplementedError
 
+    scale = scale.to(input.device)  # @LeeJiho 24.09.09 : maching device
+    zero_point = zero_point.to(input.device)  # @LeeJiho 24.09.09 : maching device
     # quantized = float / scale + zero_point
     return torch.round(1.0 / scale * input + zero_point)
 
@@ -222,15 +224,21 @@ class fixedpoint_mul(Function):
             n = 2**bit_num - 1
 
         with torch.no_grad():
-            pre_act_scaling_factor = reshape(pre_act_scaling_factor)
+            pre_act_scaling_factor = reshape(pre_act_scaling_factor).to(
+                pre_act.device
+            )  # @LeeJiho 24.09.09 : maching device
             if identity is not None:
-                identity_scaling_factor = reshape(identity_scaling_factor)
+                identity_scaling_factor = reshape(identity_scaling_factor).to(
+                    pre_act.device
+                )  # @LeeJiho 24.09.09 : maching device
 
             ctx.z_scaling_factor = z_scaling_factor
 
             z_int = torch.round(pre_act / pre_act_scaling_factor)
             _A = pre_act_scaling_factor.type(torch.double)
             _B = (z_scaling_factor.type(torch.float)).type(torch.double)
+            _A = _A.to(pre_act.device)  # @LeeJiho 24.09.09 : maching device
+            _B = _B.to(pre_act.device)  # @LeeJiho 24.09.09 : maching device
             new_scale = _A / _B
             # print(new_scale)
             # exit()
@@ -246,6 +254,8 @@ class fixedpoint_mul(Function):
 
                 _A = identity_scaling_factor.type(torch.double)
                 _B = (z_scaling_factor.type(torch.float)).type(torch.double)
+                _A = _A.to(pre_act.device)  # @LeeJiho 24.09.09 : maching device
+                _B = _B.to(pre_act.device)  # @LeeJiho 24.09.09 : maching device
                 new_scale = _A / _B
                 new_scale = reshape(new_scale)
 

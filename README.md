@@ -38,6 +38,7 @@ optional arguments:
 
 ```bash
 python quant_train.py --model deit_tiny --data <YOUR_DATA_DIR> --epochs 30 --lr 5e-7 
+python quant_train.py --model deit_base --data data/ImageNet --epochs 30 --lr 5e-7 
 ```
 
 ## Results
