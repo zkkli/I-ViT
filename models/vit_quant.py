@@ -20,7 +20,8 @@ from .quantization_utils import (
     IntSoftmax,
     IntGELU,
     QuantMatMul,
-    LogSqrt2Quantizer,
+    Log2_2x_Quantizer,
+    Log2_Quantizer,
 )
 from .utils import load_weights_from_npz
 
@@ -63,7 +64,8 @@ class Attention(nn.Module):
 
         ## choose one of the following quantizers
         ## 5bit symm == [-16, 15], but Attn map is positive, so we can use [0, 15]
-        self.qact_softmax = LogSqrt2Quantizer()
+        self.qact_softmax = Log2_2x_Quantizer()
+        # self.qact_softmax = Log2_Quantizer()
         # self.qact_softmax = QuantAct(5)
 
         self.matmul_1 = QuantMatMul()
@@ -94,11 +96,11 @@ class Attention(nn.Module):
         assert tmp_out.min() >= 0
         assert tmp_out.max() <= 65535
 
-        # attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
+        attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
 
-        # tmp_out = attn / act_scaling_factor
-        # assert tmp_out.min() >= 0
-        # assert tmp_out.max() <= 255
+        tmp_out = attn / act_scaling_factor
+        assert tmp_out.min() >= 0
+        assert tmp_out.max() <= 255
 
         attn = self.attn_drop(attn)
         x, act_scaling_factor = self.matmul_2(

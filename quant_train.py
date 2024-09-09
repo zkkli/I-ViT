@@ -22,7 +22,7 @@ parser.add_argument(
     choices=[
         "deit_tiny",
         "deit_small",
-        "deit_base",
+        "deit_base",  # GELU N 30
         "vit_base",
         "vit_large",
         "swin_tiny",
@@ -44,7 +44,7 @@ parser.add_argument(
     default="results/",
     help="path to save log and quantized model",
 )
-parser.add_argument("--calib_batchsize", default=128, type=int)
+parser.add_argument("--calib_batchsize", default=32, type=int)
 parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
 
@@ -122,7 +122,7 @@ def main():
             cnt_int_gelu += 1
         elif isinstance(module, IntSoftmax):
             cnt_int_softmax += 1
-        elif isinstance(module, LogSqrt2Quantizer):
+        elif isinstance(module, Log2_2x_Quantizer):
             cnt_log_act += 1
         elif isinstance(module, QuantMatMul):
             cnt_int_mm += 1
@@ -132,14 +132,17 @@ def main():
     logging.info("    Number of IntLayerNorm: %d" % cnt_int_ln)
     logging.info("    Number of IntGELU: %d" % cnt_int_gelu)
     logging.info("    Number of IntSoftmax: %d" % cnt_int_softmax)
-    logging.info("    Number of LogSqrt2Quantizer: %d" % cnt_log_act)
+    logging.info("    Number of Log2_2x_Quantizer: %d" % cnt_log_act)
     logging.info("    Number of QuantMatMul: %d" % cnt_int_mm)
+
+    for param in model.parameters():
+        param.requires_grad = False
 
     # calib
     unfreeze_model(model)
     model.eval()
     for i, (data, target) in enumerate(train_loader):
-        if i == 16:
+        if i == 64:
             print("calib done")
             break
         else:

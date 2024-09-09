@@ -457,6 +457,7 @@ class IntGELU(nn.Module):
 
         self.n = 23  # sufficiently large integer
         # The minimum value for ensuring accuracy (varies depending on models)
+        print("IntGELU    | n: ", self.n)
 
         self.register_buffer("act_scaling_factor", torch.zeros(1))
 
@@ -523,7 +524,7 @@ class IntSoftmax(nn.Module):
 
         self.n = 15  # sufficiently large integer
         # The minimum value for ensuring accuracy (varies depending on models)
-
+        print("IntSoftmax | n: ", self.n)
         self.register_buffer("act_scaling_factor", torch.zeros(1))
 
     def fix(self):
@@ -566,7 +567,7 @@ class IntSoftmax(nn.Module):
         return exp_int * scaling_factor, scaling_factor
 
 
-class LogSqrt2Quantizer(nn.Module):
+class Log2_2x_Quantizer(nn.Module):
     def __init__(self):
         super().__init__()
         """ log sqrt 2 quantizer for attention map """
@@ -582,34 +583,14 @@ class LogSqrt2Quantizer(nn.Module):
     def int_log_quant_10x(self, x):
         """int log2 approximation"""
 
-        def log2_int_10x(x):
-            # UINT16 입력값을 정수형으로 변환
-            x = x.to(torch.int32)
+        log2_int = x.log2().floor().to(torch.int32)
+        residual = x - 2 ** (log2_int)
 
-            # x가 0인 경우를 처리하기 위해 결과를 미리 -1로 초기화합니다.
-            log2_int = torch.full_like(x, -1, dtype=torch.int32)
-            # dja = bits_required(x)
-            # print(dja)
-            # 1. log2의 정수 부분 계산
-            temp_x = x.clone()
-            for i in range(15, -1, -1):
-                shift = 1 << i
-                greater_equal = temp_x >= shift
-                log2_int += greater_equal.to(torch.int32)
-                temp_x = temp_x >> greater_equal.to(torch.int32)
-            # print(log2_int)
-            # 2. 소수점 아래 한 자리 계산 (0.1, 0.2, ..., 0.9를 정수로 근사)
-            # 0.1 ~ 0.9에 해당하는 상수 값을 정수로 표현
-            fractional_add = torch.zeros_like(x, dtype=torch.int32)
+        halfover = torch.where(
+            residual > 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
+        ).to(x.device)
 
-            # 0.5 추가 (0.1 * 5)
-            temp_x = x - (1 << log2_int)
-            temp_x = temp_x << 1  # temp_x *= 2
-            fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
-
-            return log2_int * 10 + fractional_add
-
-        return -1 * log2_int_10x(x)  # [0, 15.5] * 10
+        return -1 * (log2_int * 10 + halfover)
 
     def int_log_dequant_10x(self, y):
         y = -y
@@ -667,16 +648,60 @@ class LogSqrt2Quantizer(nn.Module):
         #         4.9151e+04], device='cuda:0')
 
         # [5] [0, 255]
-        x_int_log_dq = x_int_log_dq // 255
+        div = x_int_log_dq.max() // 255
+        x_int_log_dq = x_int_log_dq // div
+
         out = x_int_log_dq.clamp(0, 255)
         assert out.min() >= 0
         assert out.max() <= 255
         assert out.unique().numel() <= self.n_levels
         # print(out.unique().numel(), out.unique())
-        # 16 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
-        #     64.,  96., 128., 192.], device='cuda:0')
+        # # 16 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+        # #     64.,  96., 128., 192.], device='cuda:0')
         # print()
         # print()
+        s_x = s_x * 255
+
+        x_hat = out * s_x
+
+        return x_hat, s_x
+
+
+class Log2_Quantizer(nn.Module):
+    def __init__(self):
+        super().__init__()
+        """ log sqrt 2 quantizer for attention map """
+
+        self.activation_bit = 4
+
+        self.n_levels = 2**self.activation_bit
+        self.int_bias = torch.tensor(1.0)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
+
+    def forward(self, x_hat: torch.Tensor, s_x: torch.Tensor):
+        """Verify under INT8 input"""
+        assert 0 <= x_hat.min() and x_hat.max() <= 1, f"{x_hat.min()} {x_hat.max()}"
+
+        x_int = round_ste.apply(x_hat / s_x)
+
+        # [1] add bias for avoid Inf
+        x_int = (x_int + self.int_bias).round()
+
+        # [2] log quantization in huge domain
+        x_int_log_q = -1 * x_int.log2().round()
+        x_int_log_dq = 2**-x_int_log_q
+
+        x_int_log_dq = x_int_log_dq - self.int_bias
+
+        # [5] [0, 255]
+        x_int_log_dq = x_int_log_dq // 255
+        out = x_int_log_dq.clamp(0, 255)
+        assert out.min() >= 0
+        assert out.max() <= 255
+        assert out.unique().numel() <= self.n_levels
+
         s_x = s_x * 255
 
         x_hat = out * s_x
