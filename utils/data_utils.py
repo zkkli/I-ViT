@@ -2,95 +2,89 @@ import os
 import torch
 
 from torchvision import datasets, transforms
-from torchvision.datasets.folder import ImageFolder, default_loader
-
-from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-from timm.data import create_transform
-
-from .samplers import RASampler
-import utils
 
 
-def dataloader(args):
+import math
+from PIL import Image
+import torchvision.transforms as transforms
+import torchvision.datasets as datasets
+
+
+def build_dataset(args):
     model_type = args.model.split("_")[0]
-    if model_type == "deit" or "swin":
-        dataset_train = build_dataset(is_train=True, args=args)
-        dataset_val = build_dataset(is_train=False, args=args)
-
-        sampler_train = torch.utils.data.RandomSampler(dataset_train)
-        sampler_val = torch.utils.data.SequentialSampler(dataset_val)
-
-        # Data
-        data_loader_train = torch.utils.data.DataLoader(
-            dataset_train,
-            sampler=sampler_train,
-            batch_size=args.batch_size,
-            num_workers=args.num_workers,
-            pin_memory=args.pin_mem,
-            drop_last=True,
-        )
-
-        data_loader_val = torch.utils.data.DataLoader(
-            dataset_val,
-            sampler=sampler_val,
-            batch_size=int(1.5 * args.batch_size),
-            num_workers=args.num_workers,
-            pin_memory=args.pin_mem,
-            drop_last=False,
-        )
+    if model_type == "deit":
+        mean = (0.485, 0.456, 0.406)
+        std = (0.229, 0.224, 0.225)
+        crop_pct = 0.875
+    elif model_type == "vit":
+        mean = (0.5, 0.5, 0.5)
+        std = (0.5, 0.5, 0.5)
+        crop_pct = 0.9
+    elif model_type == "swin":
+        mean = (0.485, 0.456, 0.406)
+        std = (0.229, 0.224, 0.225)
+        crop_pct = 0.9
     else:
         raise NotImplementedError
 
-    return data_loader_train, data_loader_val
+    train_transform = build_transform(mean=mean, std=std, crop_pct=crop_pct)
+    val_transform = build_transform(mean=mean, std=std, crop_pct=crop_pct)
+
+    # Data
+    traindir = os.path.join(args.dataset, "train")
+    valdir = os.path.join(args.dataset, "val")
+
+    val_dataset = datasets.ImageFolder(valdir, val_transform)
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset,
+        batch_size=args.val_batchsize,
+        shuffle=False,
+        num_workers=args.num_workers,
+        pin_memory=True,
+    )
+
+    train_dataset = datasets.ImageFolder(traindir, train_transform)
+    train_loader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=args.calib_batchsize,
+        shuffle=True,
+        num_workers=args.num_workers,
+        pin_memory=True,
+        drop_last=True,
+    )
+
+    return train_loader, val_loader
 
 
-def build_dataset(is_train, args):
-    transform = build_transform(is_train, args)
+def build_transform(
+    input_size=224,
+    interpolation="bicubic",
+    mean=(0.485, 0.456, 0.406),
+    std=(0.229, 0.224, 0.225),
+    crop_pct=0.875,
+):
+    def _pil_interp(method):
+        if method == "bicubic":
+            return Image.BICUBIC
+        elif method == "lanczos":
+            return Image.LANCZOS
+        elif method == "hamming":
+            return Image.HAMMING
+        else:
+            return Image.BILINEAR
 
-    if args.data_set == "CIFAR":
-        dataset = datasets.CIFAR100(args.data_path, train=is_train, transform=transform)
-        nb_classes = 100
-    elif args.data_set == "IMNET":
-        root = os.path.join(args.data, "train" if is_train else "val")
-        dataset = datasets.ImageFolder(root, transform=transform)
-        nb_classes = 1000
-    else:
-        raise NotImplementedError
-
-    return dataset
-
-
-def build_transform(is_train, args):
-    resize_im = args.input_size > 32
-    if is_train:
-        # this should always dispatch to transforms_imagenet_train
-        transform = create_transform(
-            input_size=args.input_size,
-            is_training=True,
-            # color_jitter=args.color_jitter,
-            # auto_augment=args.aa,
-            # interpolation=args.train_interpolation,
-            # re_prob=args.reprob,
-            # re_mode=args.remode,
-            # re_count=args.recount,
-            ## @LeeJiho 21.09.09 remove train options
-        )
-        if not resize_im:
-            # replace RandomResizedCropAndInterpolation with
-            # RandomCrop
-            transform.transforms[0] = transforms.RandomCrop(args.input_size, padding=4)
-        return transform
-
+    resize_im = input_size > 32
     t = []
     if resize_im:
-        size = int((256 / 224) * args.input_size)
+        size = int(math.floor(input_size / crop_pct))
+        ip = _pil_interp(interpolation)
         t.append(
             transforms.Resize(
-                size, interpolation=3
+                size, interpolation=ip
             ),  # to maintain same ratio w.r.t. 224 images
         )
-        t.append(transforms.CenterCrop(args.input_size))
+        t.append(transforms.CenterCrop(input_size))
 
     t.append(transforms.ToTensor())
-    t.append(transforms.Normalize(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD))
+    t.append(transforms.Normalize(mean, std))
     return transforms.Compose(t)

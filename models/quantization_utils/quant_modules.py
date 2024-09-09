@@ -163,17 +163,6 @@ class QuantAct(nn.Module):
             raise ValueError("unknown quant mode: {}".format(self.quant_mode))
 
     def __repr__(self):
-        # return (
-        #     "{0}(activation_bit={1}, "
-        #     "quant_mode: {2}, Act_min: {3:.2f}, "
-        #     "Act_max: {4:.2f})".format(
-        #         self.__class__.__name__,
-        #         self.activation_bit,
-        #         self.quant_mode,
-        #         self.x_min.item(),
-        #         self.x_max.item(),
-        #     )
-        # )
         return f"{self.__class__.__name__}(activation_bit={self.activation_bit}, quant_mode: {self.quant_mode}, Act_min: {self.min_val.item()}, Act_max: {self.max_val.item()})"
 
     def fix(self):
@@ -466,7 +455,7 @@ class IntGELU(nn.Module):
         super(IntGELU, self).__init__()
         self.output_bit = output_bit
 
-        self.n = 17  # sufficiently large integer
+        self.n = 23  # sufficiently large integer
         # The minimum value for ensuring accuracy (varies depending on models)
 
         self.register_buffer("act_scaling_factor", torch.zeros(1))

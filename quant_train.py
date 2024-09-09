@@ -7,15 +7,9 @@ import numpy as np
 
 import torch
 import torch.nn as nn
-from pathlib import Path
 
-from timm.data import Mixup
-from timm.models import create_model
-from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
-from timm.scheduler import create_scheduler
-from timm.optim import create_optimizer
-from timm.utils import NativeScaler, get_state_dict, ModelEma, accuracy
-
+from timm.utils import accuracy
+import timm
 from models import *
 from utils import *
 
@@ -29,6 +23,8 @@ parser.add_argument(
         "deit_tiny",
         "deit_small",
         "deit_base",
+        "vit_base",
+        "vit_large",
         "swin_tiny",
         "swin_small",
         "swin_base",
@@ -36,17 +32,9 @@ parser.add_argument(
     help="model",
 )
 parser.add_argument(
-    "--data", metavar="DIR", default="data/ImageNet", help="path to dataset"
-)
-parser.add_argument(
-    "--data-set",
-    default="IMNET",
-    choices=["CIFAR", "IMNET"],
-    type=str,
-    help="Image Net dataset path",
+    "--dataset", metavar="DIR", default="data/ImageNet", help="path to dataset"
 )
 parser.add_argument("--nb-classes", default=1000, type=int, help="number of classes")
-parser.add_argument("--input-size", default=224, type=int, help="images input size")
 parser.add_argument("--device", default="cuda", type=str, help="device")
 parser.add_argument("--print-freq", default=50, type=int, help="print frequency")
 parser.add_argument("--seed", default=0, type=int, help="seed")
@@ -56,21 +44,9 @@ parser.add_argument(
     default="results/",
     help="path to save log and quantized model",
 )
-
-# parser.add_argument("--resume", default="", help="resume from checkpoint")
-# parser.add_argument(
-#     "--start_epoch", default=0, type=int, metavar="N", help="start epoch"
-# )
-parser.add_argument("--batch-size", default=128, type=int)
-# parser.add_argument("--epochs", default=90, type=int)
-parser.add_argument("--num-workers", default=8, type=int)
-parser.add_argument(
-    "--pin-mem",
-    action="store_true",
-    help="Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.",
-)
-parser.add_argument("--no-pin-mem", action="store_false", dest="pin_mem", help="")
-parser.set_defaults(pin_mem=True)
+parser.add_argument("--calib_batchsize", default=128, type=int)
+parser.add_argument("--val_batchsize", default=128, type=int)
+parser.add_argument("--num_workers", default=8, type=int)
 
 
 def str2model(name):
@@ -78,8 +54,8 @@ def str2model(name):
         "deit_tiny": deit_tiny_patch16_224,
         "deit_small": deit_small_patch16_224,
         "deit_base": deit_base_patch16_224,
-        # "vit_base": vit_base_patch16_224,
-        # "vit_large": vit_large_patch16_224,
+        "vit_base": vit_base_patch16_224,
+        "vit_large": vit_large_patch16_224,
         "swin_tiny": swin_tiny_patch4_window7_224,
         "swin_small": swin_small_patch4_window7_224,
         "swin_base": swin_base_patch4_window7_224,
@@ -90,7 +66,7 @@ def str2model(name):
 
 def main():
     args = parser.parse_args()
-
+    print(timm.__version__)
     seed = args.seed
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -115,7 +91,8 @@ def main():
     device = torch.device(args.device)
 
     # Dataset
-    train_loader, val_loader = dataloader(args)
+    # train_loader, val_loader = dataloader(args)
+    train_loader, val_loader = build_dataset(args)
 
     # Model
     model = str2model(args.model)(
@@ -123,18 +100,57 @@ def main():
         num_classes=args.nb_classes,
     )
     model.to(device)
+
+    cnt_linear_fc = 0
+    cnt_linear_conv = 0
+    cnt_linear_act = 0
+    cnt_int_ln = 0
+    cnt_int_gelu = 0
+    cnt_int_softmax = 0
+    cnt_log_act = 0
+    cnt_int_mm = 0
+    for name, module in model.named_modules():
+        if isinstance(module, QuantLinear):
+            cnt_linear_fc += 1
+        elif isinstance(module, QuantConv2d):
+            cnt_linear_conv += 1
+        elif isinstance(module, QuantAct):
+            cnt_linear_act += 1
+        elif isinstance(module, IntLayerNorm):
+            cnt_int_ln += 1
+        elif isinstance(module, IntGELU):
+            cnt_int_gelu += 1
+        elif isinstance(module, IntSoftmax):
+            cnt_int_softmax += 1
+        elif isinstance(module, LogSqrt2Quantizer):
+            cnt_log_act += 1
+        elif isinstance(module, QuantMatMul):
+            cnt_int_mm += 1
+    logging.info("    Number of QuantLinear: %d" % cnt_linear_fc)
+    logging.info("    Number of QuantConv2d: %d" % cnt_linear_conv)
+    logging.info("    Number of QuantAct: %d" % cnt_linear_act)
+    logging.info("    Number of IntLayerNorm: %d" % cnt_int_ln)
+    logging.info("    Number of IntGELU: %d" % cnt_int_gelu)
+    logging.info("    Number of IntSoftmax: %d" % cnt_int_softmax)
+    logging.info("    Number of LogSqrt2Quantizer: %d" % cnt_log_act)
+    logging.info("    Number of QuantMatMul: %d" % cnt_int_mm)
+
     # calib
     unfreeze_model(model)
+    model.eval()
     for i, (data, target) in enumerate(train_loader):
+        if i == 16:
+            print("calib done")
+            break
+        else:
+            pass
+        print(".", end="")
+
         data = data.to(device, non_blocking=True)
         target = target.to(device, non_blocking=True)
 
         with torch.no_grad():
             _ = model(data)
-
-        if i == 16:
-            print("calib done")
-            break
 
     freeze_model(model)
     criterion_v = nn.CrossEntropyLoss()
@@ -145,12 +161,8 @@ def main():
 
 def validate(args, val_loader, model, criterion, device):
     batch_time = AverageMeter("Time", ":6.3f")
-    losses = AverageMeter("Loss", ":.4e")
     top1 = AverageMeter("Acc@1", ":6.2f")
     top5 = AverageMeter("Acc@5", ":6.2f")
-    # progress = ProgressMeter(
-    #     len(val_loader), [batch_time, losses, top1, top5], prefix="Test: "
-    # )
     progress = ProgressMeter(len(val_loader), [batch_time, top1, top5], prefix="Test: ")
 
     # switch to evaluate mode
@@ -226,4 +238,6 @@ class ProgressMeter(object):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
+    print("Time: %.2f" % (time.time() - start_time))

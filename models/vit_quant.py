@@ -63,9 +63,8 @@ class Attention(nn.Module):
 
         ## choose one of the following quantizers
         ## 5bit symm == [-16, 15], but Attn map is positive, so we can use [0, 15]
-        # self.qact_softmax = LogSqrt2Quantizer()
-        self.qact_softmax = QuantAct(5)
-        print(self.qact_softmax)
+        self.qact_softmax = LogSqrt2Quantizer()
+        # self.qact_softmax = QuantAct(5)
 
         self.matmul_1 = QuantMatMul()
         self.matmul_2 = QuantMatMul()
@@ -95,11 +94,11 @@ class Attention(nn.Module):
         assert tmp_out.min() >= 0
         assert tmp_out.max() <= 65535
 
-        attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
+        # attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
 
-        tmp_out = attn / act_scaling_factor
-        assert tmp_out.min() >= 0
-        assert tmp_out.max() <= 255
+        # tmp_out = attn / act_scaling_factor
+        # assert tmp_out.min() >= 0
+        # assert tmp_out.max() <= 255
 
         attn = self.attn_drop(attn)
         x, act_scaling_factor = self.matmul_2(
@@ -266,7 +265,7 @@ class VisionTransformer(nn.Module):
             if num_classes > 0
             else nn.Identity()
         )
-        self.act_out = QuantAct()
+        # self.act_out = QuantAct() # not used
         trunc_normal_(self.pos_embed, std=0.02)
         trunc_normal_(self.cls_token, std=0.02)
         self.apply(self._init_weights)
