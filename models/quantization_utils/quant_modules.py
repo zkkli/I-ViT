@@ -567,7 +567,7 @@ class IntSoftmax(nn.Module):
         return exp_int * scaling_factor, scaling_factor
 
 
-class Log2_2x_Quantizer(nn.Module):
+class Log2_2x_Quantizer_int(nn.Module):
     def __init__(self):
         super().__init__()
         """ log sqrt 2 quantizer for attention map """
@@ -591,6 +591,23 @@ class Log2_2x_Quantizer(nn.Module):
         ).to(x.device)
 
         return -1 * (log2_int * 10 + halfover)
+
+        # x = x.to(torch.int32)
+        # log2_int = torch.full_like(x, -1, dtype=torch.int32)
+
+        # temp_x = x.clone()
+        # for i in range(15, -1, -1):
+        #     shift = 1 << i
+        #     greater_equal = temp_x >= shift
+        #     log2_int += greater_equal.to(torch.int32)
+        #     temp_x = temp_x >> greater_equal.to(torch.int32)
+
+        # fractional_add = torch.zeros_like(x, dtype=torch.int32)
+
+        # temp_x = x - (1 << log2_int)
+        # temp_x = temp_x << 1  # temp_x *= 2
+        # fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
+        # return log2_int * 10 + fractional_add
 
     def int_log_dequant_10x(self, y):
         y = -y
@@ -656,8 +673,10 @@ class Log2_2x_Quantizer(nn.Module):
         assert out.max() <= 255
         assert out.unique().numel() <= self.n_levels
         # print(out.unique().numel(), out.unique())
-        # # 16 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
-        # #     64.,  96., 128., 192.], device='cuda:0')
+        # 16 tensor([  0.,   1.,   2.,   3.,   5.,   7.,  10.,  15.,  21.,  31.,  42.,  63.,
+        #          85., 127., 170., 255.], device='cuda:0')
+        # 16 tensor([  0.,   1.,   2.,   3.,   5.,   7.,  11.,  15.,  23.,  31.,  47.,  63.,
+        #          95., 127., 191., 255.], device='cuda:0')
         # print()
         # print()
         s_x = s_x * 255
@@ -667,7 +686,7 @@ class Log2_2x_Quantizer(nn.Module):
         return x_hat, s_x
 
 
-class Log2_Quantizer(nn.Module):
+class Log2_Quantizer_int(nn.Module):
     def __init__(self):
         super().__init__()
         """ log sqrt 2 quantizer for attention map """
@@ -690,14 +709,17 @@ class Log2_Quantizer(nn.Module):
         x_int = (x_int + self.int_bias).round()
 
         # [2] log quantization in huge domain
-        x_int_log_q = -1 * x_int.log2().round()
+        x_int_log_q = -1 * x_int.log2().floor()
         x_int_log_dq = 2**-x_int_log_q
 
         x_int_log_dq = x_int_log_dq - self.int_bias
 
         # [5] [0, 255]
-        x_int_log_dq = x_int_log_dq // 255
+        div = x_int_log_dq.max() // 256
+        x_int_log_dq = x_int_log_dq // div
+
         out = x_int_log_dq.clamp(0, 255)
+        # print(out.unique().numel(), out.unique())
         assert out.min() >= 0
         assert out.max() <= 255
         assert out.unique().numel() <= self.n_levels
@@ -707,3 +729,157 @@ class Log2_Quantizer(nn.Module):
         x_hat = out * s_x
 
         return x_hat, s_x
+
+
+class Log2_Quantizer_fp(nn.Module):
+    """
+    PyTorch Function that can be used for asymmetric quantization (also called uniform affine
+    quantization). Quantizes its argument in the forward pass, passes the gradient 'straight
+    through' on the backward pass, ignoring the quantization that occurred.
+    Based on https://arxiv.org/abs/1806.08342.
+    :param n_bits: number of bit for quantization
+    :param channel_wise: if True, compute scale and zero_point in each channel
+
+    for [0, 1)
+    """
+
+    def __init__(self, n_bits: int = 4, channel_wise: bool = False):
+        super(Log2_Quantizer_fp, self).__init__()
+        assert 2 <= n_bits <= 8, "bitwidth not supported"
+        self.n_bits = n_bits
+        self.n_levels = 2**self.n_bits
+        self.delta = None
+        self.inited = False
+        self.channel_wise = channel_wise
+
+    def forward(self, x: torch.Tensor, s_x):
+
+        if self.inited is False:
+            self.delta = self.init_quantization_scale(x)
+            self.inited = True
+
+        # start quantization
+        x_dequant = self.quantize(x, self.delta)
+        return x_dequant, s_x
+
+    def init_quantization_scale(self, x: torch.Tensor):
+        def lp_loss(pred, tgt, p=2.0, reduction="none"):
+            """
+            loss function measured in L_p Norm
+            """
+            if reduction == "none":
+                return (pred - tgt).abs().pow(p).sum(1).mean()
+            else:
+                return (pred - tgt).abs().pow(p).mean()
+
+        delta = None
+        x_clone = x.clone().detach()
+        delta = x_clone.max()
+        best_score = 1e10
+        for pct in [0.999, 0.9999, 0.99999]:  #
+            try:
+                new_delta = torch.quantile(x_clone.reshape(-1), pct)
+            except:
+                new_delta = torch.tensor(
+                    np.percentile(x_clone.reshape(-1).cpu(), pct * 100),
+                    device=x_clone.device,
+                    dtype=torch.float32,
+                )
+            x_q = self.quantize(x_clone, new_delta)
+            score = lp_loss(x_clone, x_q, p=2, reduction="all")
+
+            if score < best_score:
+                best_score = score
+                delta = new_delta
+
+        return delta
+
+    def quantize(self, x, delta):
+        from math import sqrt
+
+        x_int = torch.round(-1 * (x / delta).log2())
+        mask = x_int >= self.n_levels
+        x_quant = torch.clamp(x_int, 0, self.n_levels - 1)
+        # odd_mask = (x_quant % 2) * (sqrt(2) - 1) + 1
+        x_float_q = 2 ** (-1 * x_quant) * delta
+        x_float_q[mask] = 0
+
+        return x_float_q
+
+
+class LogSqrt2_Quantizer_fp(nn.Module):
+    """
+    From RepQ-ViT
+
+    PyTorch Function that can be used for asymmetric quantization (also called uniform affine
+    quantization). Quantizes its argument in the forward pass, passes the gradient 'straight
+    through' on the backward pass, ignoring the quantization that occurred.
+    Based on https://arxiv.org/abs/1806.08342.
+    :param n_bits: number of bit for quantization
+    :param channel_wise: if True, compute scale and zero_point in each channel
+
+    for [0, 1)
+    """
+
+    def __init__(self, n_bits: int = 4, channel_wise: bool = False):
+        super(LogSqrt2_Quantizer_fp, self).__init__()
+        assert 2 <= n_bits <= 8, "bitwidth not supported"
+        self.n_bits = n_bits
+        self.n_levels = 2**self.n_bits
+        self.delta = None
+        self.inited = False
+        self.channel_wise = channel_wise
+
+    def forward(self, x: torch.Tensor, s_x):
+
+        if self.inited is False:
+            self.delta = self.init_quantization_scale(x)
+            self.inited = True
+
+        # start quantization
+        x_dequant = self.quantize(x, self.delta)
+        return x_dequant, s_x
+
+    def init_quantization_scale(self, x: torch.Tensor):
+        def lp_loss(pred, tgt, p=2.0, reduction="none"):
+            """
+            loss function measured in L_p Norm
+            """
+            if reduction == "none":
+                return (pred - tgt).abs().pow(p).sum(1).mean()
+            else:
+                return (pred - tgt).abs().pow(p).mean()
+
+        delta = None
+        x_clone = x.clone().detach()
+        delta = x_clone.max()
+        best_score = 1e10
+        for pct in [0.999, 0.9999, 0.99999]:  #
+            try:
+                new_delta = torch.quantile(x_clone.reshape(-1), pct)
+            except:
+                new_delta = torch.tensor(
+                    np.percentile(x_clone.reshape(-1).cpu(), pct * 100),
+                    device=x_clone.device,
+                    dtype=torch.float32,
+                )
+            x_q = self.quantize(x_clone, new_delta)
+            score = lp_loss(x_clone, x_q, p=2, reduction="all")
+
+            if score < best_score:
+                best_score = score
+                delta = new_delta
+
+        return delta
+
+    def quantize(self, x, delta):
+        from math import sqrt
+
+        x_int = torch.round(-1 * (x / delta).log2() * 2)
+        mask = x_int >= self.n_levels
+        x_quant = torch.clamp(x_int, 0, self.n_levels - 1)
+        odd_mask = (x_quant % 2) * (sqrt(2) - 1) + 1
+        x_float_q = 2 ** (-1 * torch.ceil(x_quant / 2)) * odd_mask * delta
+        x_float_q[mask] = 0
+
+        return x_float_q

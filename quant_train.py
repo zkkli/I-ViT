@@ -122,7 +122,7 @@ def main():
             cnt_int_gelu += 1
         elif isinstance(module, IntSoftmax):
             cnt_int_softmax += 1
-        elif isinstance(module, Log2_2x_Quantizer):
+        elif isinstance(module, Log2_2x_Quantizer_int):
             cnt_log_act += 1
         elif isinstance(module, QuantMatMul):
             cnt_int_mm += 1
