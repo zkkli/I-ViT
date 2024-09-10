@@ -47,6 +47,7 @@ class Attention(nn.Module):
         attn_drop=0.0,
         proj_drop=0.0,
         intsoftmax_exp_n=15,
+        attn_quant=None,
     ):
         super().__init__()
         self.num_heads = num_heads
@@ -67,11 +68,20 @@ class Attention(nn.Module):
 
         ## choose one of the following quantizers
         ## 5bit symm == [-16, 15], but Attn map is positive, so we can use [0, 15]
-        self.qact_softmax = Log2_2x_Quantizer_int()
-        # self.qact_softmax = Log2_Quantizer_int()
-        # self.qact_softmax = Log2_Quantizer_fp()
-        # self.qact_softmax = LogSqrt2_Quantizer_fp()
-        # self.qact_softmax = QuantAct(5)
+        if attn_quant is None:
+            self.qact_softmax = None
+        elif attn_quant == "Symmetric":
+            self.qact_softmax = QuantAct(5)
+        elif attn_quant == "Log2_2x_Quantizer_int":
+            self.qact_softmax = Log2_2x_Quantizer_int()
+        elif attn_quant == "Log2_Quantizer_int":
+            self.qact_softmax = Log2_Quantizer_int()
+        elif attn_quant == "Log2_Quantizer_fp":
+            self.qact_softmax = Log2_Quantizer_fp()
+        elif attn_quant == "LogSqrt2_Quantizer_fp":
+            self.qact_softmax = LogSqrt2_Quantizer_fp()
+        else:
+            raise ValueError(f"Unknown quantizer: {attn_quant}")
 
         self.matmul_1 = QuantMatMul()
         self.matmul_2 = QuantMatMul()
@@ -97,15 +107,11 @@ class Attention(nn.Module):
 
         attn, act_scaling_factor = self.int_softmax(attn, act_scaling_factor)
 
-        tmp_out = attn / act_scaling_factor
-        assert tmp_out.min() >= 0
-        assert tmp_out.max() <= 65535
-
-        attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
-
-        # tmp_out = attn / act_scaling_factor
-        # assert tmp_out.min() >= 0
-        # assert tmp_out.max() <= 255
+        if self.qact_softmax is not None:
+            attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
+            tmp_out = attn / act_scaling_factor
+            assert tmp_out.min() >= 0
+            assert tmp_out.max() <= 255
 
         attn = self.attn_drop(attn)
         x, act_scaling_factor = self.matmul_2(
@@ -137,6 +143,7 @@ class Block(nn.Module):
         norm_layer=nn.LayerNorm,
         intsoftmax_exp_n=15,
         intgelu_exp_n=23,
+        attn_quant=None,
     ):
         super().__init__()
         self.norm1 = norm_layer(dim)
@@ -149,6 +156,7 @@ class Block(nn.Module):
             attn_drop=attn_drop,
             proj_drop=drop,
             intsoftmax_exp_n=intsoftmax_exp_n,
+            attn_quant=attn_quant,
         )
         # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
         self.drop_path = DropPath(drop_path) if drop_path > 0.0 else nn.Identity()
@@ -210,6 +218,7 @@ class VisionTransformer(nn.Module):
         norm_layer=None,
         intsoftmax_exp_n=15,
         intgelu_exp_n=23,
+        attn_quant=None,
     ):
         super().__init__()
         self.num_classes = num_classes
@@ -254,6 +263,7 @@ class VisionTransformer(nn.Module):
                     norm_layer=norm_layer,
                     intsoftmax_exp_n=intsoftmax_exp_n,
                     intgelu_exp_n=intgelu_exp_n,
+                    attn_quant=attn_quant,
                 )
                 for i in range(depth)
             ]

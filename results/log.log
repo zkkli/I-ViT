@@ -1734,3 +1734,22 @@ Time: 232.3010-Sep-24 02:41:05 - Namespace(model='deit_tiny', dataset='data/Imag
 10-Sep-24 14:49:15 -     Number of QuantMatMul: 24
 10-Sep-24 14:49:35 - Test: [  0/391]	Time  2.776 ( 2.776)	Acc@1  85.94 ( 85.94)	Acc@5  96.88 ( 96.88)
 10-Sep-24 14:50:02 - Test: [ 50/391]	Time  0.543 ( 0.586)	Acc@1  89.84 ( 77.57)	Acc@5  96.88 ( 93.29)
+10-Sep-24 14:58:12 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_2x_Quantizer_int')
+10-Sep-24 14:58:14 -     Number of QuantLinear: 49
+10-Sep-24 14:58:14 -     Number of QuantConv2d: 1
+10-Sep-24 14:58:14 -     Number of QuantAct: 137
+10-Sep-24 14:58:14 -     Number of IntLayerNorm: 25
+10-Sep-24 14:58:14 -     Number of IntGELU: 12
+10-Sep-24 14:58:14 -     Number of IntSoftmax: 12
+10-Sep-24 14:58:14 -     Number of Log2_Quantizer: 12
+10-Sep-24 14:58:24 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_2x_Quantizer_int')
+10-Sep-24 14:58:26 -     Number of QuantLinear: 49
+10-Sep-24 14:58:26 -     Number of QuantConv2d: 1
+10-Sep-24 14:58:26 -     Number of QuantAct: 137
+10-Sep-24 14:58:26 -     Number of IntLayerNorm: 25
+10-Sep-24 14:58:26 -     Number of IntGELU: 12
+10-Sep-24 14:58:26 -     Number of IntSoftmax: 12
+10-Sep-24 14:58:26 -     Number of Log2_Quantizer: 12
+10-Sep-24 14:58:26 -     - type : Log2_2x_Quantizer_int
+10-Sep-24 14:58:26 -     Number of QuantMatMul: 24
+10-Sep-24 14:58:45 - Test: [  0/391]	Time  2.390 ( 2.390)	Acc@1  85.94 ( 85.94)	Acc@5  96.88 ( 96.88)

@@ -52,6 +52,20 @@ parser.add_argument("--intsoftmax_exp_n", default=15, type=int)
 parser.add_argument("--intgelu_exp_n", default=23, type=int)
 
 
+parser.add_argument(
+    "--attn_quant",
+    default="Log2_2x_Quantizer_int",
+    choices=[
+        "Symmetric",
+        "Log2_2x_Quantizer_int",
+        "Log2_Quantizer_int",
+        "Log2_Quantizer_fp",
+        "LogSqrt2_Quantizer_fp",
+    ],
+    help="attention quantization. only 4bit quantization is supported",
+)
+
+
 def str2model(name):
     d = {
         "deit_tiny": deit_tiny_patch16_224,
@@ -102,9 +116,11 @@ def main():
         num_classes=args.nb_classes,
         intsoftmax_exp_n=args.intsoftmax_exp_n,
         intgelu_exp_n=args.intgelu_exp_n,
+        attn_quant=args.attn_quant,
     )
     model.to(device)
 
+    # counter
     cnt_linear_fc = 0
     cnt_linear_conv = 0
     cnt_linear_act = 0
@@ -136,7 +152,8 @@ def main():
     logging.info("    Number of IntLayerNorm: %d" % cnt_int_ln)
     logging.info("    Number of IntGELU: %d" % cnt_int_gelu)
     logging.info("    Number of IntSoftmax: %d" % cnt_int_softmax)
-    logging.info("    Number of Log2_2x_Quantizer: %d" % cnt_log_act)
+    logging.info("    Number of Log2_Quantizer: %d" % cnt_log_act)
+    logging.info("    - type : %s" % args.attn_quant)
     logging.info("    Number of QuantMatMul: %d" % cnt_int_mm)
 
     for param in model.parameters():
