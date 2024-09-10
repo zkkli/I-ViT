@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description="I-ViT")
 
 parser.add_argument(
     "--model",
-    default="deit_small",
+    default="deit_tiny",
     choices=[
         "deit_tiny",
         "deit_small",
@@ -49,7 +49,7 @@ parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
 
 parser.add_argument("--intsoftmax_exp_n", default=15, type=int)
-parser.add_argument("--intgelu_exp_n", default=29, type=int)
+parser.add_argument("--intgelu_exp_n", default=23, type=int)
 
 
 def str2model(name):

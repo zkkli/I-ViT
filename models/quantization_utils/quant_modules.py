@@ -592,22 +592,22 @@ class Log2_2x_Quantizer_int(nn.Module):
 
         return -1 * (log2_int * 10 + halfover)
 
-        # x = x.to(torch.int32)
-        # log2_int = torch.full_like(x, -1, dtype=torch.int32)
+        x = x.to(torch.int32)
+        log2_int = torch.full_like(x, -1, dtype=torch.int32)
 
-        # temp_x = x.clone()
-        # for i in range(15, -1, -1):
-        #     shift = 1 << i
-        #     greater_equal = temp_x >= shift
-        #     log2_int += greater_equal.to(torch.int32)
-        #     temp_x = temp_x >> greater_equal.to(torch.int32)
+        temp_x = x.clone()
+        for i in range(15, -1, -1):
+            shift = 1 << i
+            greater_equal = temp_x >= shift
+            log2_int += greater_equal.to(torch.int32)
+            temp_x = temp_x >> greater_equal.to(torch.int32)
 
-        # fractional_add = torch.zeros_like(x, dtype=torch.int32)
+        fractional_add = torch.zeros_like(x, dtype=torch.int32)
 
-        # temp_x = x - (1 << log2_int)
-        # temp_x = temp_x << 1  # temp_x *= 2
-        # fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
-        # return log2_int * 10 + fractional_add
+        temp_x = x - (1 << log2_int)
+        temp_x = temp_x << 1  # temp_x *= 2
+        fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
+        return -1 * (log2_int * 10 + fractional_add)
 
     def int_log_dequant_10x(self, y):
         y = -y
@@ -620,13 +620,12 @@ class Log2_2x_Quantizer_int(nn.Module):
         return (int_num + frac_num).floor()
 
     def forward(self, x_hat: torch.Tensor, s_x: torch.Tensor):
-        """Verify under INT8 input"""
         assert 0 <= x_hat.min() and x_hat.max() <= 1, f"{x_hat.min()} {x_hat.max()}"
 
         x_int = round_ste.apply(x_hat / s_x)
 
         # [1] add bias for avoid Inf
-        x_int = (x_int + self.int_bias).round()
+        # x_int = (x_int + self.int_bias).round()
 
         # [2] log quantization in huge domain
         x_int_log_q = self.int_log_quant_10x(x_int)
@@ -638,6 +637,7 @@ class Log2_2x_Quantizer_int(nn.Module):
 
         # [3] log dequantization
         x_int_log_dq = self.int_log_dequant_10x(x_int_log_q)
+        x_int_log_dq[x_int_log_dq == 1] = 0
         # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
         # 31 tensor([1.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00, 8.0000e+00,
         #         1.2000e+01, 1.6000e+01, 2.4000e+01, 3.2000e+01, 4.8000e+01, 6.4000e+01,
@@ -646,7 +646,7 @@ class Log2_2x_Quantizer_int(nn.Module):
         #         6.1440e+03, 8.1920e+03, 1.2288e+04, 1.6384e+04, 2.4576e+04, 3.2768e+04,
         #         4.9152e+04], device='cuda:0')
 
-        x_int_log_dq = x_int_log_dq - self.int_bias
+        # x_int_log_dq = x_int_log_dq - self.int_bias
         # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
         # 31 tensor([0.0000e+00, 1.0000e+00, 2.0000e+00, 3.0000e+00, 5.0000e+00, 7.0000e+00,
         #         1.1000e+01, 1.5000e+01, 2.3000e+01, 3.1000e+01, 4.7000e+01, 6.3000e+01,
@@ -656,7 +656,7 @@ class Log2_2x_Quantizer_int(nn.Module):
         #         4.9151e+04], device='cuda:0')
 
         # [4] [0, 255]
-        div = x_int_log_dq.max() // 255
+        div = x_int_log_dq.max() // x_int_log_dq.unique()[-16]
         x_int_log_dq = x_int_log_dq // div
 
         out = x_int_log_dq.clamp(0, 255)
