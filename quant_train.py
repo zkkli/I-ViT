@@ -18,10 +18,10 @@ parser = argparse.ArgumentParser(description="I-ViT")
 
 parser.add_argument(
     "--model",
-    default="deit_base",
+    default="deit_small",
     choices=[
-        "deit_tiny",
-        "deit_small",
+        "deit_tiny",  # soft 15, gelu 23
+        "deit_small",  # soft 15, gelu 29
         "deit_base",
         "vit_base",
         "vit_large",
@@ -55,13 +55,13 @@ parser.add_argument("--intgelu_exp_n", default=29, type=int)
 
 parser.add_argument(
     "--attn_quant",
-    default="Log2_2x_Quantizer_int",
+    default="Log2Quantizer",
     choices=[
-        "Symmetric",
-        "Log2_2x_Quantizer_int",
-        "Log2_Quantizer_int",
-        "Log2_Quantizer_fp",
-        "LogSqrt2_Quantizer_fp",
+        "Symmetric_UINT4",
+        "Symmetric_UINT8",
+        "Log2_half_Quantizer",
+        "Log2Quantizer",
+        "LogSqrt2Quantizer",
         "NoQuant",
     ],
     help="attention quantization. only 4bit quantization is supported",
@@ -143,7 +143,7 @@ def main():
             cnt_int_gelu += 1
         elif isinstance(module, IntSoftmax):
             cnt_int_softmax += 1
-        elif isinstance(module, Log2_2x_Quantizer_int):
+        elif isinstance(module, Log2_half_Quantizer):
             cnt_log_act += 1
         elif isinstance(module, QuantMatMul):
             cnt_int_mm += 1
@@ -217,7 +217,7 @@ def validate(args, val_loader, model, criterion, device):
         #     break
         if i % args.print_freq == 0:
             progress.display(i)
-
+    progress.display(i)
     print(" * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}".format(top1=top1, top5=top5))
     return top1.avg
 

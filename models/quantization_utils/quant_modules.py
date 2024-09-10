@@ -567,7 +567,7 @@ class IntSoftmax(nn.Module):
         return exp_int * scaling_factor, scaling_factor
 
 
-class Log2_2x_Quantizer_int(nn.Module):
+class Log2_half_Quantizer(nn.Module):
     def __init__(self):
         super().__init__()
         """ log sqrt 2 quantizer for attention map """
@@ -666,48 +666,7 @@ class Log2_2x_Quantizer_int(nn.Module):
         return x_hat, s_x
 
 
-class Log2_Quantizer_int(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.activation_bit = 4
-        self.n_levels = 2**self.activation_bit
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
-
-    def forward(self, x_hat: torch.Tensor, s_x: torch.Tensor):
-        """Verify under INT8 input"""
-        assert 0 <= x_hat.min() and x_hat.max() <= 1, f"{x_hat.min()} {x_hat.max()}"
-
-        x_int = round_ste.apply(x_hat / s_x)
-
-        # [1] log quant-dequant
-        x_int_log_q = -1 * x_int.log2().floor()
-        x_int_log_dq = 2**-x_int_log_q
-        x_int_log_dq[x_int_log_dq == 1] = 0
-
-        # [2] [0, 255]
-        div = x_int_log_dq.max() // 255
-        x_int_log_dq = x_int_log_dq // div
-
-        out = x_int_log_dq.clamp(0, 255)
-        # print(out.unique().numel(), out.unique())
-        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
-        #     device='cuda:0')
-        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
-        #     device='cuda:0')
-        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
-        #     device='cuda:0')
-        assert out.unique().numel() <= self.n_levels
-
-        s_x = s_x * 255
-
-        x_hat = out * s_x
-
-        return x_hat, s_x
-
-
-class Log2_Quantizer_fp(nn.Module):
+class Log2Quantizer(nn.Module):
     """
     PyTorch Function that can be used for asymmetric quantization (also called uniform affine
     quantization). Quantizes its argument in the forward pass, passes the gradient 'straight
@@ -720,7 +679,7 @@ class Log2_Quantizer_fp(nn.Module):
     """
 
     def __init__(self, n_bits: int = 4, channel_wise: bool = False):
-        super(Log2_Quantizer_fp, self).__init__()
+        super(Log2Quantizer, self).__init__()
         assert 2 <= n_bits <= 8, "bitwidth not supported"
         self.n_bits = n_bits
         self.n_levels = 2**self.n_bits
@@ -775,15 +734,22 @@ class Log2_Quantizer_fp(nn.Module):
 
         x_int = torch.round(-1 * (x / delta).log2())
         mask = x_int >= self.n_levels
+        # print(x_int.unique())
+        #   tensor([-1., -0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12.,
+        #   13., 14., 15., inf], device='cuda:0')
         x_quant = torch.clamp(x_int, 0, self.n_levels - 1)
-        # odd_mask = (x_quant % 2) * (sqrt(2) - 1) + 1
+        # print(x_quant.unique())
+        #   tensor([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.,
+        #   14., 15.], device='cuda:0')
         x_float_q = 2 ** (-1 * x_quant) * delta
         x_float_q[mask] = 0
-
+        # Log2 UINT8 test
+        # print((x_float_q * 255).round().unique())
+        # exit()
         return x_float_q
 
 
-class LogSqrt2_Quantizer_fp(nn.Module):
+class LogSqrt2Quantizer(nn.Module):
     """
     From RepQ-ViT
 
@@ -798,7 +764,7 @@ class LogSqrt2_Quantizer_fp(nn.Module):
     """
 
     def __init__(self, n_bits: int = 4, channel_wise: bool = False):
-        super(LogSqrt2_Quantizer_fp, self).__init__()
+        super(LogSqrt2Quantizer, self).__init__()
         assert 2 <= n_bits <= 8, "bitwidth not supported"
         self.n_bits = n_bits
         self.n_levels = 2**self.n_bits

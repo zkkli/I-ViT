@@ -20,10 +20,9 @@ from .quantization_utils import (
     IntSoftmax,
     IntGELU,
     QuantMatMul,
-    Log2_2x_Quantizer_int,
-    Log2_Quantizer_int,
-    Log2_Quantizer_fp,
-    LogSqrt2_Quantizer_fp,
+    Log2_half_Quantizer,
+    Log2Quantizer,
+    LogSqrt2Quantizer,
 )
 from .utils import load_weights_from_npz
 
@@ -70,16 +69,16 @@ class Attention(nn.Module):
         ## 5bit symm == [-16, 15], but Attn map is positive, so we can use [0, 15]
         if attn_quant is None:
             self.qact_softmax = None
-        elif attn_quant == "Symmetric":
+        elif attn_quant == "Symmetric_UINT4":
             self.qact_softmax = QuantAct(5)
-        elif attn_quant == "Log2_2x_Quantizer_int":
-            self.qact_softmax = Log2_2x_Quantizer_int()
-        elif attn_quant == "Log2_Quantizer_int":
-            self.qact_softmax = Log2_Quantizer_int()
-        elif attn_quant == "Log2_Quantizer_fp":
-            self.qact_softmax = Log2_Quantizer_fp()
-        elif attn_quant == "LogSqrt2_Quantizer_fp":
-            self.qact_softmax = LogSqrt2_Quantizer_fp()
+        elif attn_quant == "Symmetric_UINT8":
+            self.qact_softmax = QuantAct(9)
+        elif attn_quant == "Log2_half_Quantizer":
+            self.qact_softmax = Log2_half_Quantizer()
+        elif attn_quant == "Log2Quantizer":
+            self.qact_softmax = Log2Quantizer()
+        elif attn_quant == "LogSqrt2Quantizer":
+            self.qact_softmax = LogSqrt2Quantizer()
         elif attn_quant == "NoQuant":
             self.qact_softmax = None
         else:
@@ -112,7 +111,7 @@ class Attention(nn.Module):
         if self.qact_softmax is not None:
             attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
 
-            if isinstance(self.qact_softmax, Log2_2x_Quantizer_int):
+            if isinstance(self.qact_softmax, Log2_half_Quantizer):
                 tmp_out = attn / act_scaling_factor
                 assert tmp_out.min() >= 0
                 assert tmp_out.max() <= 255

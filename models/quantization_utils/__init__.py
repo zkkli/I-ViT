@@ -6,8 +6,7 @@ from .quant_modules import (
     IntLayerNorm,
     IntSoftmax,
     IntGELU,
-    Log2_2x_Quantizer_int,
-    Log2_Quantizer_int,
-    Log2_Quantizer_fp,
-    LogSqrt2_Quantizer_fp,
+    Log2_half_Quantizer,
+    Log2Quantizer,
+    LogSqrt2Quantizer,
 )

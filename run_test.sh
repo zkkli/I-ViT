@@ -1,10 +1,10 @@
 #!/bin/bash
-
+MODEL="deit_small"
 # Define the log file where all outputs will be stored
-LOGFILE="experiment_logs.txt"
+LOGFILE="experiment_log_${MODEL}.txt"
 
 # Define the attn_quant schemes to iterate over
-ATTN_QUANT_SCHEMES=("Symmetric" "Log2_2x_Quantizer_int" "Log2_Quantizer_int" "Log2_Quantizer_fp" "LogSqrt2_Quantizer_fp", "NoQuant")
+ATTN_QUANT_SCHEMES=( "Symmetric_UINT4" "Symmetric_UINT8" "Log2_half_Quantizer" "Log2Quantizer" "LogSqrt2Quantizer" "NoQuant" )
 
 # Clear the log file if it already exists
 > $LOGFILE
