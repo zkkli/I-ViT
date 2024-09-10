@@ -587,27 +587,28 @@ class Log2_2x_Quantizer_int(nn.Module):
         residual = x - 2 ** (log2_int)
 
         halfover = torch.where(
-            residual > 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
+            residual >= 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
         ).to(x.device)
+        out = -1 * (log2_int * 10 + halfover)
+        out[out == -5] = 0
+        return out
 
-        return -1 * (log2_int * 10 + halfover)
+        # x = x.to(torch.int32)
+        # log2_int = torch.full_like(x, -1, dtype=torch.int32)
 
-        x = x.to(torch.int32)
-        log2_int = torch.full_like(x, -1, dtype=torch.int32)
+        # temp_x = x.clone()
+        # for i in range(15, -1, -1):
+        #     shift = 1 << i
+        #     greater_equal = temp_x >= shift
+        #     log2_int += greater_equal.to(torch.int32)
+        #     temp_x = temp_x >> greater_equal.to(torch.int32)
 
-        temp_x = x.clone()
-        for i in range(15, -1, -1):
-            shift = 1 << i
-            greater_equal = temp_x >= shift
-            log2_int += greater_equal.to(torch.int32)
-            temp_x = temp_x >> greater_equal.to(torch.int32)
+        # fractional_add = torch.zeros_like(x, dtype=torch.int32)
 
-        fractional_add = torch.zeros_like(x, dtype=torch.int32)
-
-        temp_x = x - (1 << log2_int)
-        temp_x = temp_x << 1  # temp_x *= 2
-        fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
-        return -1 * (log2_int * 10 + fractional_add)
+        # temp_x = x - (1 << log2_int)
+        # temp_x = temp_x << 1  # temp_x *= 2
+        # fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
+        # return -1 * (log2_int * 10 + fractional_add)
 
     def int_log_dequant_10x(self, y):
         y = -y
@@ -660,8 +661,6 @@ class Log2_2x_Quantizer_int(nn.Module):
         x_int_log_dq = x_int_log_dq // div
 
         out = x_int_log_dq.clamp(0, 255)
-        assert out.min() >= 0
-        assert out.max() <= 255
         assert out.unique().numel() <= self.n_levels
         # print(out.unique().numel(), out.unique())
         # 16 tensor([  0.,   1.,   2.,   3.,   5.,   7.,  10.,  15.,  21.,  31.,  42.,  63.,
@@ -680,12 +679,8 @@ class Log2_2x_Quantizer_int(nn.Module):
 class Log2_Quantizer_int(nn.Module):
     def __init__(self):
         super().__init__()
-        """ log sqrt 2 quantizer for attention map """
-
         self.activation_bit = 4
-
         self.n_levels = 2**self.activation_bit
-        self.int_bias = torch.tensor(1.0)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
@@ -696,23 +691,23 @@ class Log2_Quantizer_int(nn.Module):
 
         x_int = round_ste.apply(x_hat / s_x)
 
-        # [1] add bias for avoid Inf
-        x_int = (x_int + self.int_bias).round()
-
-        # [2] log quantization in huge domain
+        # [1] log quant-dequant
         x_int_log_q = -1 * x_int.log2().floor()
         x_int_log_dq = 2**-x_int_log_q
+        x_int_log_dq[x_int_log_dq == 1] = 0
 
-        x_int_log_dq = x_int_log_dq - self.int_bias
-
-        # [5] [0, 255]
-        div = x_int_log_dq.max() // 256
+        # [2] [0, 255]
+        div = x_int_log_dq.max() // 255
         x_int_log_dq = x_int_log_dq // div
 
         out = x_int_log_dq.clamp(0, 255)
         # print(out.unique().numel(), out.unique())
-        assert out.min() >= 0
-        assert out.max() <= 255
+        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
+        #     device='cuda:0')
+        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
+        #     device='cuda:0')
+        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
+        #     device='cuda:0')
         assert out.unique().numel() <= self.n_levels
 
         s_x = s_x * 255

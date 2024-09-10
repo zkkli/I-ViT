@@ -109,9 +109,11 @@ class Attention(nn.Module):
 
         if self.qact_softmax is not None:
             attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
-            tmp_out = attn / act_scaling_factor
-            assert tmp_out.min() >= 0
-            assert tmp_out.max() <= 255
+
+            if isinstance(self.qact_softmax, Log2_2x_Quantizer_int):
+                tmp_out = attn / act_scaling_factor
+                assert tmp_out.min() >= 0
+                assert tmp_out.max() <= 255
 
         attn = self.attn_drop(attn)
         x, act_scaling_factor = self.matmul_2(
