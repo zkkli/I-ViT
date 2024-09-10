@@ -45,6 +45,7 @@ parser.add_argument(
     help="path to save log and quantized model",
 )
 parser.add_argument("--calib_batchsize", default=32, type=int)
+parser.add_argument("--calib_images", default=1024, type=int)
 parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
 
@@ -61,6 +62,7 @@ parser.add_argument(
         "Log2_Quantizer_int",
         "Log2_Quantizer_fp",
         "LogSqrt2_Quantizer_fp",
+        "NoQuant",
     ],
     help="attention quantization. only 4bit quantization is supported",
 )
@@ -83,7 +85,6 @@ def str2model(name):
 
 def main():
     args = parser.parse_args()
-    print(timm.__version__)
     seed = args.seed
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -163,7 +164,7 @@ def main():
     unfreeze_model(model)
     model.eval()
     for i, (data, target) in enumerate(train_loader):
-        if i == 64:
+        if i == args.calib_images // args.calib_batchsize:
             print("calib done")
             break
         else:

@@ -80,6 +80,8 @@ class Attention(nn.Module):
             self.qact_softmax = Log2_Quantizer_fp()
         elif attn_quant == "LogSqrt2_Quantizer_fp":
             self.qact_softmax = LogSqrt2_Quantizer_fp()
+        elif attn_quant == "NoQuant":
+            self.qact_softmax = None
         else:
             raise ValueError(f"Unknown quantizer: {attn_quant}")
 

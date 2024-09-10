@@ -581,34 +581,36 @@ class Log2_2x_Quantizer_int(nn.Module):
         return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
 
     def int_log_quant_10x(self, x):
-        """int log2 approximation"""
+        # """int log2 approximation"""
 
-        log2_int = x.log2().floor().to(torch.int32)
-        residual = x - 2 ** (log2_int)
+        # log2_int = x.log2().floor().to(torch.int32)
+        # residual = x - 2 ** (log2_int)
 
-        halfover = torch.where(
-            residual >= 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
-        ).to(x.device)
-        out = -1 * (log2_int * 10 + halfover)
+        # halfover = torch.where(
+        #     residual >= 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
+        # ).to(x.device)
+        # out = -1 * (log2_int * 10 + halfover)
+        # out[out == -5] = 0
+        # return out
+
+        x = x.to(torch.int32)
+        log2_int = torch.full_like(x, -1, dtype=torch.int32)
+
+        temp_x = x.clone()
+        for i in range(15, -1, -1):
+            shift = 1 << i
+            greater_equal = temp_x >= shift
+            log2_int += greater_equal.to(torch.int32)
+            temp_x = temp_x >> greater_equal.to(torch.int32)
+
+        fractional_add = torch.zeros_like(x, dtype=torch.int32)
+
+        temp_x = x - (1 << log2_int)
+        temp_x = temp_x << 1  # temp_x *= 2
+        fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
+        out = -1 * (log2_int * 10 + fractional_add)
         out[out == -5] = 0
         return out
-
-        # x = x.to(torch.int32)
-        # log2_int = torch.full_like(x, -1, dtype=torch.int32)
-
-        # temp_x = x.clone()
-        # for i in range(15, -1, -1):
-        #     shift = 1 << i
-        #     greater_equal = temp_x >= shift
-        #     log2_int += greater_equal.to(torch.int32)
-        #     temp_x = temp_x >> greater_equal.to(torch.int32)
-
-        # fractional_add = torch.zeros_like(x, dtype=torch.int32)
-
-        # temp_x = x - (1 << log2_int)
-        # temp_x = temp_x << 1  # temp_x *= 2
-        # fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
-        # return -1 * (log2_int * 10 + fractional_add)
 
     def int_log_dequant_10x(self, y):
         y = -y
@@ -640,21 +642,12 @@ class Log2_2x_Quantizer_int(nn.Module):
         x_int_log_dq = self.int_log_dequant_10x(x_int_log_q)
         x_int_log_dq[x_int_log_dq == 1] = 0
         # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
-        # 31 tensor([1.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00, 8.0000e+00,
+        # 31 tensor([0.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00, 8.0000e+00,
         #         1.2000e+01, 1.6000e+01, 2.4000e+01, 3.2000e+01, 4.8000e+01, 6.4000e+01,
         #         9.6000e+01, 1.2800e+02, 1.9200e+02, 2.5600e+02, 3.8400e+02, 5.1200e+02,
         #         7.6800e+02, 1.0240e+03, 1.5360e+03, 2.0480e+03, 3.0720e+03, 4.0960e+03,
         #         6.1440e+03, 8.1920e+03, 1.2288e+04, 1.6384e+04, 2.4576e+04, 3.2768e+04,
         #         4.9152e+04], device='cuda:0')
-
-        # x_int_log_dq = x_int_log_dq - self.int_bias
-        # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
-        # 31 tensor([0.0000e+00, 1.0000e+00, 2.0000e+00, 3.0000e+00, 5.0000e+00, 7.0000e+00,
-        #         1.1000e+01, 1.5000e+01, 2.3000e+01, 3.1000e+01, 4.7000e+01, 6.3000e+01,
-        #         9.5000e+01, 1.2700e+02, 1.9100e+02, 2.5500e+02, 3.8300e+02, 5.1100e+02,
-        #         7.6700e+02, 1.0230e+03, 1.5350e+03, 2.0470e+03, 3.0710e+03, 4.0950e+03,
-        #         6.1430e+03, 8.1910e+03, 1.2287e+04, 1.6383e+04, 2.4575e+04, 3.2767e+04,
-        #         4.9151e+04], device='cuda:0')
 
         # [4] [0, 255]
         div = x_int_log_dq.max() // x_int_log_dq.unique()[-16]
@@ -663,11 +656,8 @@ class Log2_2x_Quantizer_int(nn.Module):
         out = x_int_log_dq.clamp(0, 255)
         assert out.unique().numel() <= self.n_levels
         # print(out.unique().numel(), out.unique())
-        # 16 tensor([  0.,   1.,   2.,   3.,   5.,   7.,  10.,  15.,  21.,  31.,  42.,  63.,
-        #          85., 127., 170., 255.], device='cuda:0')
-        # 16 tensor([  0.,   1.,   2.,   3.,   5.,   7.,  11.,  15.,  23.,  31.,  47.,  63.,
-        #          95., 127., 191., 255.], device='cuda:0')
-        # print()
+        # 16 tensor([  0.,   1.,   2.,   4.,   5.,   8.,  10.,  16.,  21.,  32.,  42.,  64.,
+        #          85., 128., 170., 255.], device='cuda:0')
         # print()
         s_x = s_x * 255
 
