@@ -18,11 +18,11 @@ parser = argparse.ArgumentParser(description="I-ViT")
 
 parser.add_argument(
     "--model",
-    default="deit_tiny",
+    default="deit_base",
     choices=[
         "deit_tiny",
         "deit_small",
-        "deit_base",  # GELU N 30
+        "deit_base",
         "vit_base",
         "vit_large",
         "swin_tiny",
@@ -47,6 +47,9 @@ parser.add_argument(
 parser.add_argument("--calib_batchsize", default=32, type=int)
 parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
+
+parser.add_argument("--intsoftmax_exp_n", default=15, type=int)
+parser.add_argument("--intgelu_exp_n", default=23, type=int)
 
 
 def str2model(name):
@@ -91,13 +94,14 @@ def main():
     device = torch.device(args.device)
 
     # Dataset
-    # train_loader, val_loader = dataloader(args)
     train_loader, val_loader = build_dataset(args)
 
     # Model
     model = str2model(args.model)(
         pretrained=True,
         num_classes=args.nb_classes,
+        intsoftmax_exp_n=args.intsoftmax_exp_n,
+        intgelu_exp_n=args.intgelu_exp_n,
     )
     model.to(device)
 

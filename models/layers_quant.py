@@ -122,13 +122,14 @@ class Mlp(nn.Module):
         out_features=None,
         act_layer=IntGELU,
         drop=0.0,
+        intgelu_exp_n=23,
     ):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         # self.fc1 = nn.Linear(in_features, hidden_features)
         self.fc1 = QuantLinear(in_features, hidden_features)
-        self.act = act_layer()
+        self.act = act_layer(intgelu_exp_n=intgelu_exp_n)
         self.qact1 = QuantAct()
         # self.fc2 = nn.Linear(hidden_features, out_features)
         self.fc2 = QuantLinear(hidden_features, out_features)

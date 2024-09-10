@@ -46,6 +46,7 @@ class Attention(nn.Module):
         qk_scale=None,
         attn_drop=0.0,
         proj_drop=0.0,
+        intsoftmax_exp_n=15,
     ):
         super().__init__()
         self.num_heads = num_heads
@@ -62,7 +63,7 @@ class Attention(nn.Module):
         # self.qact_softmax = QuantAct() # not used
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj_drop = nn.Dropout(proj_drop)
-        self.int_softmax = IntSoftmax(17)
+        self.int_softmax = IntSoftmax(output_bit=17, intsoftmax_exp_n=intsoftmax_exp_n)
 
         ## choose one of the following quantizers
         ## 5bit symm == [-16, 15], but Attn map is positive, so we can use [0, 15]
@@ -121,6 +122,7 @@ class Attention(nn.Module):
 
 
 class Block(nn.Module):
+
     def __init__(
         self,
         dim,
@@ -133,6 +135,8 @@ class Block(nn.Module):
         drop_path=0.0,
         act_layer=nn.GELU,
         norm_layer=nn.LayerNorm,
+        intsoftmax_exp_n=15,
+        intgelu_exp_n=23,
     ):
         super().__init__()
         self.norm1 = norm_layer(dim)
@@ -144,6 +148,7 @@ class Block(nn.Module):
             qk_scale=qk_scale,
             attn_drop=attn_drop,
             proj_drop=drop,
+            intsoftmax_exp_n=intsoftmax_exp_n,
         )
         # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
         self.drop_path = DropPath(drop_path) if drop_path > 0.0 else nn.Identity()
@@ -156,6 +161,7 @@ class Block(nn.Module):
             hidden_features=mlp_hidden_dim,
             act_layer=act_layer,
             drop=drop,
+            intgelu_exp_n=intgelu_exp_n,
         )
         self.qact4 = QuantAct(16)
 
@@ -202,6 +208,8 @@ class VisionTransformer(nn.Module):
         attn_drop_rate=0.0,
         drop_path_rate=0.0,
         norm_layer=None,
+        intsoftmax_exp_n=15,
+        intgelu_exp_n=23,
     ):
         super().__init__()
         self.num_classes = num_classes
@@ -244,6 +252,8 @@ class VisionTransformer(nn.Module):
                     drop_path=dpr[i],
                     act_layer=IntGELU,
                     norm_layer=norm_layer,
+                    intsoftmax_exp_n=intsoftmax_exp_n,
+                    intgelu_exp_n=intgelu_exp_n,
                 )
                 for i in range(depth)
             ]

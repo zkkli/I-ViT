@@ -451,11 +451,11 @@ class IntGELU(nn.Module):
     Class to quantize given GELU layer
     """
 
-    def __init__(self, output_bit=8):
+    def __init__(self, output_bit=8, intgelu_exp_n=23):
         super(IntGELU, self).__init__()
         self.output_bit = output_bit
 
-        self.n = 23  # sufficiently large integer
+        self.n = intgelu_exp_n  # sufficiently large integer
         # The minimum value for ensuring accuracy (varies depending on models)
         print("IntGELU    | n: ", self.n)
 
@@ -518,11 +518,11 @@ class IntSoftmax(nn.Module):
     Class to quantize given Softmax layer
     """
 
-    def __init__(self, output_bit=8):
+    def __init__(self, output_bit=8, intsoftmax_exp_n=15):
         super(IntSoftmax, self).__init__()
         self.output_bit = output_bit
 
-        self.n = 15  # sufficiently large integer
+        self.n = intsoftmax_exp_n  # sufficiently large integer
         # The minimum value for ensuring accuracy (varies depending on models)
         print("IntSoftmax | n: ", self.n)
         self.register_buffer("act_scaling_factor", torch.zeros(1))
