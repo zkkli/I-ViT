@@ -20,7 +20,8 @@ from .quantization_utils import (
     IntSoftmax,
     IntGELU,
     QuantMatMul,
-    Log2_half_Quantizer,
+    Log2_half_Int_Quantizer,
+    Log2_Int_Quantizer,
     Log2Quantizer,
     LogSqrt2Quantizer,
 )
@@ -73,8 +74,10 @@ class Attention(nn.Module):
             self.qact_softmax = QuantAct(5)
         elif attn_quant == "Symmetric_UINT8":
             self.qact_softmax = QuantAct(9)
-        elif attn_quant == "Log2_half_Quantizer":
-            self.qact_softmax = Log2_half_Quantizer()
+        elif attn_quant == "Log2_half_Int_Quantizer":
+            self.qact_softmax = Log2_half_Int_Quantizer()
+        elif attn_quant == "Log2_Int_Quantizer":
+            self.qact_softmax = Log2_Int_Quantizer()
         elif attn_quant == "Log2Quantizer":
             self.qact_softmax = Log2Quantizer()
         elif attn_quant == "LogSqrt2Quantizer":
@@ -111,7 +114,7 @@ class Attention(nn.Module):
         if self.qact_softmax is not None:
             attn, act_scaling_factor = self.qact_softmax(attn, act_scaling_factor)
 
-            if isinstance(self.qact_softmax, Log2_half_Quantizer):
+            if isinstance(self.qact_softmax, Log2_half_Int_Quantizer):
                 tmp_out = attn / act_scaling_factor
                 assert tmp_out.min() >= 0
                 assert tmp_out.max() <= 255

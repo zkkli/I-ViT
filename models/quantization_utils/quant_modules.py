@@ -567,7 +567,83 @@ class IntSoftmax(nn.Module):
         return exp_int * scaling_factor, scaling_factor
 
 
-class Log2_half_Quantizer(nn.Module):
+class Log2_Int_Quantizer(nn.Module):
+    def __init__(self):
+        super().__init__()
+        """ log sqrt 2 quantizer for attention map """
+
+        self.activation_bit = 4
+
+        self.n_levels = 2**self.activation_bit
+        self.int_bias = torch.tensor(1.0)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
+
+    def int_log_quant_10x(self, x):
+        x = x.to(torch.int32)
+        zero_mask = x == 0
+        log2_int = torch.full_like(x, -1, dtype=torch.int32)
+
+        temp_x = x.clone()
+        for i in range(15, -1, -1):
+            shift = 1 << i
+            greater_equal = temp_x >= shift
+            log2_int += greater_equal.to(torch.int32)
+            temp_x = temp_x >> greater_equal.to(torch.int32)
+
+        fractional_add = torch.zeros_like(x, dtype=torch.int32)
+
+        temp_x = x - (1 << log2_int)
+        temp_x = temp_x << 1  # temp_x *= 2
+        fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
+        out = -1 * (log2_int * 10 + fractional_add)
+        out[zero_mask] = 99999
+        return out
+
+    def int_log_dequant_10x(self, y):
+        zero_mask = y == 99999
+        y = -y
+
+        int_part = y // 10
+        frac_part = y % 10 / 5
+
+        int_num = 1 << int_part
+        frac_num = frac_part * (1 << (int_part - 1))
+        out = (int_num + frac_num).floor()
+        out[zero_mask] = 0
+        return out
+
+    def forward(self, x_hat: torch.Tensor, s_x: torch.Tensor):
+        assert 0 <= x_hat.min() and x_hat.max() <= 1, f"{x_hat.min()} {x_hat.max()}"
+
+        x_int = round_ste.apply(x_hat / s_x)
+
+        # [1] log quantization in huge domain
+        x_int_log_q = (self.int_log_quant_10x(x_int) // 10) * 10
+        x_int_log_dq = self.int_log_dequant_10x(x_int_log_q)
+
+        # ver2.  * Prec@1 69.454 Prec@5 89.464
+        out = x_int_log_dq * 256 // x_int_log_dq.max()
+        if out.unique().numel() > self.n_levels:
+            out = out // 2
+        out = out.clamp(0, 255)
+
+        # print(out.unique().numel(), out.unique())
+        # 10 tensor([  0.,   1.,   2.,   4.,   8.,  16.,  32.,  64., 128., 255.],
+
+        assert (
+            out.unique().numel() <= self.n_levels
+        ), f"{out.unique().numel(), out.unique()}"
+
+        s_x = s_x * 255
+
+        x_hat = out * s_x
+
+        return x_hat, s_x
+
+
+class Log2_half_Int_Quantizer(nn.Module):
     def __init__(self):
         super().__init__()
         """ log sqrt 2 quantizer for attention map """
@@ -649,7 +725,7 @@ class Log2_half_Quantizer(nn.Module):
             print(out.unique().numel(), out.unique())
             out = out // 2
         out = out.clamp(0, 255)
-        
+
         assert (
             out.unique().numel() <= self.n_levels
         ), f"{out.unique().numel(), out.unique()}"

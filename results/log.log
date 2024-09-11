@@ -49946,3 +49946,565 @@ Time: 232.3010-Sep-24 02:41:05 - Namespace(model='deit_tiny', dataset='data/Imag
 11-Sep-24 21:16:10 - Test: [300/391]	Time  0.667 ( 0.672)	Acc@1  72.66 ( 69.89)	Acc@5  82.81 ( 89.90)
 11-Sep-24 21:16:44 - Test: [350/391]	Time  0.667 ( 0.672)	Acc@1  71.09 ( 69.01)	Acc@5  84.38 ( 89.25)
 11-Sep-24 21:17:10 - Test: [390/391]	Time  0.477 ( 0.671)	Acc@1  45.00 ( 69.15)	Acc@5  82.50 ( 89.32)
+11-Sep-24 21:49:01 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=32, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+11-Sep-24 21:49:03 -     Number of QuantLinear: 49
+11-Sep-24 21:49:03 -     Number of QuantConv2d: 1
+11-Sep-24 21:49:03 -     Number of QuantAct: 149
+11-Sep-24 21:49:03 -     Number of IntLayerNorm: 25
+11-Sep-24 21:49:03 -     Number of IntGELU: 12
+11-Sep-24 21:49:03 -     Number of IntSoftmax: 12
+11-Sep-24 21:49:03 -     Number of Log2_Quantizer: 0
+11-Sep-24 21:49:03 -     - type : Symmetric_UINT4
+11-Sep-24 21:49:03 -     Number of QuantMatMul: 24
+11-Sep-24 21:49:07 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=32, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Symmetric_UINT4')
+11-Sep-24 21:49:08 - Test: [  0/391]	Time  2.696 ( 2.696)	Acc@1  12.50 ( 12.50)	Acc@5  26.56 ( 26.56)
+11-Sep-24 21:49:31 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Symmetric_UINT4')
+11-Sep-24 21:49:31 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+11-Sep-24 21:49:33 -     Number of QuantLinear: 49
+11-Sep-24 21:49:33 -     Number of QuantConv2d: 1
+11-Sep-24 21:49:33 -     Number of QuantAct: 149
+11-Sep-24 21:49:33 -     Number of IntLayerNorm: 25
+11-Sep-24 21:49:33 -     Number of IntGELU: 12
+11-Sep-24 21:49:33 -     Number of IntSoftmax: 12
+11-Sep-24 21:49:33 -     Number of Log2_Quantizer: 0
+11-Sep-24 21:49:33 -     - type : Symmetric_UINT4
+11-Sep-24 21:49:33 -     Number of QuantMatMul: 24
+11-Sep-24 21:49:33 -     Number of QuantLinear: 49
+11-Sep-24 21:49:33 -     Number of QuantConv2d: 1
+11-Sep-24 21:49:33 -     Number of QuantAct: 149
+11-Sep-24 21:49:33 -     Number of IntLayerNorm: 25
+11-Sep-24 21:49:33 -     Number of IntGELU: 12
+11-Sep-24 21:49:33 -     Number of IntSoftmax: 12
+11-Sep-24 21:49:33 -     Number of Log2_Quantizer: 0
+11-Sep-24 21:49:33 -     - type : Symmetric_UINT4
+11-Sep-24 21:49:33 -     Number of QuantMatMul: 24
+11-Sep-24 21:49:50 - Test: [  0/391]	Time  3.372 ( 3.372)	Acc@1  37.50 ( 37.50)	Acc@5  55.47 ( 55.47)
+11-Sep-24 21:49:52 - Test: [  0/391]	Time  4.841 ( 4.841)	Acc@1   9.38 (  9.38)	Acc@5  17.97 ( 17.97)
+11-Sep-24 21:50:37 - Test: [ 50/391]	Time  0.943 ( 0.989)	Acc@1  28.91 ( 23.19)	Acc@5  60.94 ( 39.75)
+11-Sep-24 21:50:39 - Test: [ 50/391]	Time  0.944 ( 1.017)	Acc@1   6.25 (  7.31)	Acc@5  17.19 ( 16.96)
+11-Sep-24 21:51:24 - Test: [100/391]	Time  0.945 ( 0.966)	Acc@1  30.47 ( 24.24)	Acc@5  57.81 ( 44.93)
+11-Sep-24 21:51:26 - Test: [100/391]	Time  0.945 ( 0.981)	Acc@1  15.62 (  7.20)	Acc@5  32.03 ( 17.67)
+11-Sep-24 21:52:11 - Test: [150/391]	Time  0.944 ( 0.959)	Acc@1   5.47 ( 22.68)	Acc@5  18.75 ( 42.23)
+11-Sep-24 21:52:13 - Test: [150/391]	Time  0.945 ( 0.969)	Acc@1   3.12 (  6.73)	Acc@5   9.38 ( 16.60)
+11-Sep-24 21:52:59 - Test: [200/391]	Time  0.945 ( 0.955)	Acc@1   1.56 ( 20.17)	Acc@5  13.28 ( 37.78)
+11-Sep-24 21:53:01 - Test: [200/391]	Time  0.946 ( 0.963)	Acc@1   1.56 (  6.20)	Acc@5   5.47 ( 15.41)
+11-Sep-24 21:53:46 - Test: [250/391]	Time  0.944 ( 0.953)	Acc@1  12.50 ( 18.04)	Acc@5  28.12 ( 34.55)
+11-Sep-24 21:53:48 - Test: [250/391]	Time  0.943 ( 0.959)	Acc@1   6.25 (  5.84)	Acc@5  12.50 ( 14.50)
+11-Sep-24 21:54:33 - Test: [300/391]	Time  0.945 ( 0.952)	Acc@1  16.41 ( 16.77)	Acc@5  32.81 ( 32.55)
+11-Sep-24 21:54:35 - Test: [300/391]	Time  0.944 ( 0.957)	Acc@1   5.47 (  5.54)	Acc@5   9.38 ( 13.97)
+11-Sep-24 21:55:20 - Test: [350/391]	Time  0.944 ( 0.951)	Acc@1  13.28 ( 15.92)	Acc@5  31.25 ( 31.08)
+11-Sep-24 21:55:22 - Test: [350/391]	Time  0.944 ( 0.955)	Acc@1   7.81 (  5.36)	Acc@5  16.41 ( 13.56)
+11-Sep-24 21:55:58 - Test: [390/391]	Time  0.818 ( 0.950)	Acc@1  10.00 ( 15.12)	Acc@5  18.75 ( 29.76)
+11-Sep-24 21:55:59 - Test: [390/391]	Time  0.407 ( 0.951)	Acc@1   1.25 (  5.16)	Acc@5   7.50 ( 13.05)
+11-Sep-24 21:56:01 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Symmetric_UINT8')
+11-Sep-24 21:56:01 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT8')
+11-Sep-24 21:56:03 -     Number of QuantLinear: 49
+11-Sep-24 21:56:03 -     Number of QuantConv2d: 1
+11-Sep-24 21:56:03 -     Number of QuantAct: 149
+11-Sep-24 21:56:03 -     Number of IntLayerNorm: 25
+11-Sep-24 21:56:03 -     Number of IntGELU: 12
+11-Sep-24 21:56:03 -     Number of IntSoftmax: 12
+11-Sep-24 21:56:03 -     Number of Log2_Quantizer: 0
+11-Sep-24 21:56:03 -     - type : Symmetric_UINT8
+11-Sep-24 21:56:03 -     Number of QuantMatMul: 24
+11-Sep-24 21:56:04 -     Number of QuantLinear: 49
+11-Sep-24 21:56:04 -     Number of QuantConv2d: 1
+11-Sep-24 21:56:04 -     Number of QuantAct: 149
+11-Sep-24 21:56:04 -     Number of IntLayerNorm: 25
+11-Sep-24 21:56:04 -     Number of IntGELU: 12
+11-Sep-24 21:56:04 -     Number of IntSoftmax: 12
+11-Sep-24 21:56:04 -     Number of Log2_Quantizer: 0
+11-Sep-24 21:56:04 -     - type : Symmetric_UINT8
+11-Sep-24 21:56:04 -     Number of QuantMatMul: 24
+11-Sep-24 21:56:19 - Test: [  0/391]	Time  2.934 ( 2.934)	Acc@1  89.84 ( 89.84)	Acc@5  96.09 ( 96.09)
+11-Sep-24 21:56:22 - Test: [  0/391]	Time  4.616 ( 4.616)	Acc@1  70.31 ( 70.31)	Acc@5  86.72 ( 86.72)
+11-Sep-24 21:57:06 - Test: [ 50/391]	Time  0.944 ( 0.973)	Acc@1  90.62 ( 77.96)	Acc@5  96.88 ( 92.77)
+11-Sep-24 21:57:09 - Test: [ 50/391]	Time  0.945 ( 1.016)	Acc@1  79.69 ( 63.37)	Acc@5  93.75 ( 84.68)
+11-Sep-24 21:57:53 - Test: [100/391]	Time  0.943 ( 0.959)	Acc@1  79.69 ( 75.97)	Acc@5  94.53 ( 93.33)
+11-Sep-24 21:57:56 - Test: [100/391]	Time  0.944 ( 0.980)	Acc@1  51.56 ( 60.67)	Acc@5  84.38 ( 84.72)
+11-Sep-24 21:58:40 - Test: [150/391]	Time  0.946 ( 0.954)	Acc@1  67.97 ( 75.88)	Acc@5  94.53 ( 93.48)
+11-Sep-24 21:58:44 - Test: [150/391]	Time  0.944 ( 0.969)	Acc@1  57.81 ( 61.04)	Acc@5  94.53 ( 85.16)
+11-Sep-24 21:59:27 - Test: [200/391]	Time  0.946 ( 0.952)	Acc@1  61.72 ( 72.66)	Acc@5  92.97 ( 91.74)
+11-Sep-24 21:59:31 - Test: [200/391]	Time  0.945 ( 0.963)	Acc@1  53.91 ( 58.44)	Acc@5  77.34 ( 82.96)
+11-Sep-24 22:00:15 - Test: [250/391]	Time  0.945 ( 0.951)	Acc@1  81.25 ( 71.19)	Acc@5  91.41 ( 90.66)
+11-Sep-24 22:00:18 - Test: [250/391]	Time  0.945 ( 0.959)	Acc@1  73.44 ( 57.31)	Acc@5  85.94 ( 81.76)
+11-Sep-24 22:01:02 - Test: [300/391]	Time  0.946 ( 0.950)	Acc@1  71.09 ( 69.97)	Acc@5  84.38 ( 89.86)
+11-Sep-24 22:01:05 - Test: [300/391]	Time  0.946 ( 0.957)	Acc@1  68.75 ( 56.21)	Acc@5  81.25 ( 80.74)
+11-Sep-24 22:01:49 - Test: [350/391]	Time  0.944 ( 0.949)	Acc@1  65.62 ( 68.98)	Acc@5  85.94 ( 89.24)
+11-Sep-24 22:01:53 - Test: [350/391]	Time  0.945 ( 0.955)	Acc@1  48.44 ( 55.42)	Acc@5  75.00 ( 79.98)
+11-Sep-24 22:02:27 - Test: [390/391]	Time  0.799 ( 0.948)	Acc@1  45.00 ( 69.20)	Acc@5  80.00 ( 89.40)
+11-Sep-24 22:02:28 - Test: [390/391]	Time  0.356 ( 0.949)	Acc@1  30.00 ( 55.75)	Acc@5  68.75 ( 80.23)
+11-Sep-24 22:02:29 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_half_Quantizer')
+11-Sep-24 22:02:31 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2_half_Quantizer')
+11-Sep-24 22:02:31 -     Number of QuantLinear: 49
+11-Sep-24 22:02:31 -     Number of QuantConv2d: 1
+11-Sep-24 22:02:31 -     Number of QuantAct: 137
+11-Sep-24 22:02:31 -     Number of IntLayerNorm: 25
+11-Sep-24 22:02:31 -     Number of IntGELU: 12
+11-Sep-24 22:02:31 -     Number of IntSoftmax: 12
+11-Sep-24 22:02:31 -     Number of Log2_Quantizer: 12
+11-Sep-24 22:02:31 -     - type : Log2_half_Quantizer
+11-Sep-24 22:02:31 -     Number of QuantMatMul: 24
+11-Sep-24 22:02:33 -     Number of QuantLinear: 49
+11-Sep-24 22:02:33 -     Number of QuantConv2d: 1
+11-Sep-24 22:02:33 -     Number of QuantAct: 137
+11-Sep-24 22:02:33 -     Number of IntLayerNorm: 25
+11-Sep-24 22:02:33 -     Number of IntGELU: 12
+11-Sep-24 22:02:33 -     Number of IntSoftmax: 12
+11-Sep-24 22:02:33 -     Number of Log2_Quantizer: 12
+11-Sep-24 22:02:33 -     - type : Log2_half_Quantizer
+11-Sep-24 22:02:33 -     Number of QuantMatMul: 24
+11-Sep-24 22:02:51 - Test: [  0/391]	Time  3.100 ( 3.100)	Acc@1  89.84 ( 89.84)	Acc@5  96.88 ( 96.88)
+11-Sep-24 22:02:55 - Test: [  0/391]	Time  4.429 ( 4.429)	Acc@1  67.97 ( 67.97)	Acc@5  88.28 ( 88.28)
+11-Sep-24 22:03:59 - Test: [ 50/391]	Time  1.387 ( 1.384)	Acc@1  87.50 ( 77.77)	Acc@5  97.66 ( 93.43)
+11-Sep-24 22:04:05 - Test: [ 50/391]	Time  1.367 ( 1.452)	Acc@1  78.91 ( 57.34)	Acc@5  93.75 ( 79.29)
+11-Sep-24 22:05:09 - Test: [100/391]	Time  1.399 ( 1.392)	Acc@1  80.47 ( 75.67)	Acc@5  94.53 ( 93.82)
+11-Sep-24 22:05:14 - Test: [100/391]	Time  1.421 ( 1.422)	Acc@1  42.97 ( 54.53)	Acc@5  82.03 ( 79.60)
+11-Sep-24 22:06:18 - Test: [150/391]	Time  1.393 ( 1.391)	Acc@1  69.53 ( 75.48)	Acc@5  96.09 ( 93.82)
+11-Sep-24 22:06:24 - Test: [150/391]	Time  1.394 ( 1.414)	Acc@1  56.25 ( 55.12)	Acc@5  88.28 ( 80.30)
+11-Sep-24 22:07:28 - Test: [200/391]	Time  1.382 ( 1.390)	Acc@1  60.94 ( 72.58)	Acc@5  89.06 ( 92.02)
+11-Sep-24 22:07:34 - Test: [200/391]	Time  1.362 ( 1.409)	Acc@1  42.97 ( 52.93)	Acc@5  66.41 ( 78.23)
+11-Sep-24 22:08:37 - Test: [250/391]	Time  1.376 ( 1.388)	Acc@1  85.16 ( 71.23)	Acc@5  94.53 ( 90.99)
+11-Sep-24 22:08:44 - Test: [250/391]	Time  1.385 ( 1.408)	Acc@1  67.19 ( 52.09)	Acc@5  82.03 ( 77.30)
+11-Sep-24 22:09:46 - Test: [300/391]	Time  1.391 ( 1.387)	Acc@1  74.22 ( 70.04)	Acc@5  87.50 ( 90.20)
+11-Sep-24 22:09:54 - Test: [300/391]	Time  1.420 ( 1.405)	Acc@1  66.41 ( 51.18)	Acc@5  79.69 ( 76.37)
+11-Sep-24 22:10:55 - Test: [350/391]	Time  1.401 ( 1.387)	Acc@1  70.31 ( 69.09)	Acc@5  86.72 ( 89.57)
+11-Sep-24 22:11:04 - Test: [350/391]	Time  1.426 ( 1.404)	Acc@1  41.41 ( 50.49)	Acc@5  72.66 ( 75.75)
+11-Sep-24 22:11:50 - Test: [390/391]	Time  1.095 ( 1.385)	Acc@1  43.75 ( 69.26)	Acc@5  80.00 ( 89.64)
+11-Sep-24 22:11:53 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2Quantizer')
+11-Sep-24 22:11:54 - Test: [390/391]	Time  0.481 ( 1.390)	Acc@1  27.50 ( 50.79)	Acc@5  63.75 ( 75.86)
+11-Sep-24 22:11:55 -     Number of QuantLinear: 49
+11-Sep-24 22:11:55 -     Number of QuantConv2d: 1
+11-Sep-24 22:11:55 -     Number of QuantAct: 137
+11-Sep-24 22:11:55 -     Number of IntLayerNorm: 25
+11-Sep-24 22:11:55 -     Number of IntGELU: 12
+11-Sep-24 22:11:55 -     Number of IntSoftmax: 12
+11-Sep-24 22:11:55 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:11:55 -     - type : Log2Quantizer
+11-Sep-24 22:11:55 -     Number of QuantMatMul: 24
+11-Sep-24 22:11:57 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2Quantizer')
+11-Sep-24 22:11:59 -     Number of QuantLinear: 49
+11-Sep-24 22:11:59 -     Number of QuantConv2d: 1
+11-Sep-24 22:11:59 -     Number of QuantAct: 137
+11-Sep-24 22:11:59 -     Number of IntLayerNorm: 25
+11-Sep-24 22:11:59 -     Number of IntGELU: 12
+11-Sep-24 22:11:59 -     Number of IntSoftmax: 12
+11-Sep-24 22:11:59 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:11:59 -     - type : Log2Quantizer
+11-Sep-24 22:11:59 -     Number of QuantMatMul: 24
+11-Sep-24 22:12:09 - Test: [  0/391]	Time  2.917 ( 2.917)	Acc@1  88.28 ( 88.28)	Acc@5  96.09 ( 96.09)
+11-Sep-24 22:12:17 - Test: [  0/391]	Time  3.662 ( 3.662)	Acc@1  67.97 ( 67.97)	Acc@5  89.06 ( 89.06)
+11-Sep-24 22:12:50 - Test: [ 50/391]	Time  0.927 ( 0.877)	Acc@1  89.84 ( 76.41)	Acc@5  96.88 ( 92.31)
+11-Sep-24 22:13:04 - Test: [ 50/391]	Time  0.926 ( 0.980)	Acc@1  80.47 ( 63.30)	Acc@5  93.75 ( 84.91)
+11-Sep-24 22:13:37 - Test: [100/391]	Time  0.928 ( 0.902)	Acc@1  77.34 ( 74.75)	Acc@5  95.31 ( 92.84)
+11-Sep-24 22:13:50 - Test: [100/391]	Time  0.927 ( 0.954)	Acc@1  49.22 ( 60.85)	Acc@5  85.94 ( 85.18)
+11-Sep-24 22:14:23 - Test: [150/391]	Time  0.927 ( 0.910)	Acc@1  66.41 ( 74.69)	Acc@5  94.53 ( 92.96)
+11-Sep-24 22:14:36 - Test: [150/391]	Time  0.926 ( 0.945)	Acc@1  57.03 ( 61.45)	Acc@5  92.97 ( 85.61)
+11-Sep-24 22:15:10 - Test: [200/391]	Time  0.927 ( 0.914)	Acc@1  57.81 ( 71.42)	Acc@5  89.06 ( 91.06)
+11-Sep-24 22:15:23 - Test: [200/391]	Time  0.926 ( 0.941)	Acc@1  48.44 ( 58.89)	Acc@5  72.66 ( 83.27)
+11-Sep-24 22:15:56 - Test: [250/391]	Time  0.928 ( 0.917)	Acc@1  79.69 ( 69.86)	Acc@5  92.19 ( 89.87)
+11-Sep-24 22:16:09 - Test: [250/391]	Time  0.927 ( 0.938)	Acc@1  77.34 ( 57.83)	Acc@5  85.94 ( 82.07)
+11-Sep-24 22:16:42 - Test: [300/391]	Time  0.930 ( 0.919)	Acc@1  72.66 ( 68.57)	Acc@5  84.38 ( 89.02)
+11-Sep-24 22:16:56 - Test: [300/391]	Time  0.928 ( 0.936)	Acc@1  68.75 ( 56.75)	Acc@5  82.03 ( 80.98)
+11-Sep-24 22:17:29 - Test: [350/391]	Time  0.927 ( 0.920)	Acc@1  63.28 ( 67.54)	Acc@5  84.38 ( 88.31)
+11-Sep-24 22:17:42 - Test: [350/391]	Time  0.926 ( 0.935)	Acc@1  50.00 ( 55.91)	Acc@5  75.00 ( 80.24)
+11-Sep-24 22:18:06 - Test: [390/391]	Time  0.780 ( 0.920)	Acc@1  43.75 ( 67.69)	Acc@5  81.25 ( 88.50)
+11-Sep-24 22:18:08 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='LogSqrt2Quantizer')
+11-Sep-24 22:18:10 -     Number of QuantLinear: 49
+11-Sep-24 22:18:10 -     Number of QuantConv2d: 1
+11-Sep-24 22:18:10 -     Number of QuantAct: 137
+11-Sep-24 22:18:10 -     Number of IntLayerNorm: 25
+11-Sep-24 22:18:10 -     Number of IntGELU: 12
+11-Sep-24 22:18:10 -     Number of IntSoftmax: 12
+11-Sep-24 22:18:10 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:18:10 -     - type : LogSqrt2Quantizer
+11-Sep-24 22:18:10 -     Number of QuantMatMul: 24
+11-Sep-24 22:18:12 - Test: [390/391]	Time  0.568 ( 0.917)	Acc@1  27.50 ( 56.26)	Acc@5  70.00 ( 80.54)
+11-Sep-24 22:18:15 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='LogSqrt2Quantizer')
+11-Sep-24 22:18:17 -     Number of QuantLinear: 49
+11-Sep-24 22:18:17 -     Number of QuantConv2d: 1
+11-Sep-24 22:18:17 -     Number of QuantAct: 137
+11-Sep-24 22:18:17 -     Number of IntLayerNorm: 25
+11-Sep-24 22:18:17 -     Number of IntGELU: 12
+11-Sep-24 22:18:17 -     Number of IntSoftmax: 12
+11-Sep-24 22:18:17 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:18:17 -     - type : LogSqrt2Quantizer
+11-Sep-24 22:18:17 -     Number of QuantMatMul: 24
+11-Sep-24 22:18:23 - Test: [  0/391]	Time  2.657 ( 2.657)	Acc@1  88.28 ( 88.28)	Acc@5  96.09 ( 96.09)
+11-Sep-24 22:18:39 - Test: [  0/391]	Time  3.762 ( 3.762)	Acc@1  73.44 ( 73.44)	Acc@5  88.28 ( 88.28)
+11-Sep-24 22:19:03 - Test: [ 50/391]	Time  0.952 ( 0.839)	Acc@1  89.06 ( 77.96)	Acc@5  96.88 ( 93.23)
+11-Sep-24 22:19:26 - Test: [ 50/391]	Time  0.952 ( 1.007)	Acc@1  82.03 ( 64.29)	Acc@5  92.97 ( 84.62)
+11-Sep-24 22:19:51 - Test: [100/391]	Time  0.952 ( 0.895)	Acc@1  80.47 ( 76.01)	Acc@5  94.53 ( 93.63)
+11-Sep-24 22:20:14 - Test: [100/391]	Time  0.952 ( 0.980)	Acc@1  49.22 ( 61.37)	Acc@5  84.38 ( 84.75)
+11-Sep-24 22:20:38 - Test: [150/391]	Time  0.953 ( 0.915)	Acc@1  69.53 ( 75.87)	Acc@5  95.31 ( 93.72)
+11-Sep-24 22:21:02 - Test: [150/391]	Time  0.962 ( 0.972)	Acc@1  57.03 ( 61.70)	Acc@5  96.09 ( 85.46)
+11-Sep-24 22:21:26 - Test: [200/391]	Time  0.952 ( 0.924)	Acc@1  60.94 ( 72.81)	Acc@5  88.28 ( 91.86)
+11-Sep-24 22:21:50 - Test: [200/391]	Time  0.953 ( 0.968)	Acc@1  46.88 ( 59.13)	Acc@5  75.00 ( 83.32)
+11-Sep-24 22:22:14 - Test: [250/391]	Time  0.953 ( 0.930)	Acc@1  81.25 ( 71.31)	Acc@5  92.97 ( 90.82)
+11-Sep-24 22:22:37 - Test: [250/391]	Time  0.953 ( 0.965)	Acc@1  73.44 ( 58.01)	Acc@5  86.72 ( 82.07)
+11-Sep-24 22:23:02 - Test: [300/391]	Time  0.954 ( 0.934)	Acc@1  71.88 ( 69.99)	Acc@5  84.38 ( 89.93)
+11-Sep-24 22:23:25 - Test: [300/391]	Time  0.954 ( 0.963)	Acc@1  66.41 ( 56.89)	Acc@5  82.03 ( 81.17)
+11-Sep-24 22:23:49 - Test: [350/391]	Time  0.953 ( 0.937)	Acc@1  71.09 ( 69.06)	Acc@5  88.28 ( 89.29)
+11-Sep-24 22:24:13 - Test: [350/391]	Time  0.953 ( 0.962)	Acc@1  46.88 ( 56.24)	Acc@5  75.78 ( 80.47)
+11-Sep-24 22:24:27 - Test: [390/391]	Time  0.822 ( 0.938)	Acc@1  43.75 ( 69.19)	Acc@5  80.00 ( 89.40)
+11-Sep-24 22:24:30 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='NoQuant')
+11-Sep-24 22:24:32 -     Number of QuantLinear: 49
+11-Sep-24 22:24:32 -     Number of QuantConv2d: 1
+11-Sep-24 22:24:32 -     Number of QuantAct: 137
+11-Sep-24 22:24:32 -     Number of IntLayerNorm: 25
+11-Sep-24 22:24:32 -     Number of IntGELU: 12
+11-Sep-24 22:24:32 -     Number of IntSoftmax: 12
+11-Sep-24 22:24:32 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:24:32 -     - type : NoQuant
+11-Sep-24 22:24:32 -     Number of QuantMatMul: 24
+11-Sep-24 22:24:41 - Test: [390/391]	Time  0.521 ( 0.936)	Acc@1  23.75 ( 56.50)	Acc@5  67.50 ( 80.66)
+11-Sep-24 22:24:44 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='NoQuant')
+11-Sep-24 22:24:46 -     Number of QuantLinear: 49
+11-Sep-24 22:24:46 -     Number of QuantConv2d: 1
+11-Sep-24 22:24:46 -     Number of QuantAct: 137
+11-Sep-24 22:24:46 -     Number of IntLayerNorm: 25
+11-Sep-24 22:24:46 -     Number of IntGELU: 12
+11-Sep-24 22:24:46 -     Number of IntSoftmax: 12
+11-Sep-24 22:24:46 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:24:46 -     - type : NoQuant
+11-Sep-24 22:24:46 -     Number of QuantMatMul: 24
+11-Sep-24 22:24:49 - Test: [  0/391]	Time  3.313 ( 3.313)	Acc@1  89.06 ( 89.06)	Acc@5  96.88 ( 96.88)
+11-Sep-24 22:25:10 - Test: [  0/391]	Time  3.812 ( 3.812)	Acc@1  71.09 ( 71.09)	Acc@5  86.72 ( 86.72)
+11-Sep-24 22:25:23 - Test: [ 50/391]	Time  0.887 ( 0.737)	Acc@1  90.62 ( 77.96)	Acc@5  96.88 ( 93.31)
+11-Sep-24 22:25:55 - Test: [ 50/391]	Time  0.885 ( 0.945)	Acc@1  78.91 ( 64.15)	Acc@5  92.97 ( 84.62)
+11-Sep-24 22:26:08 - Test: [100/391]	Time  0.886 ( 0.810)	Acc@1  76.56 ( 76.20)	Acc@5  94.53 ( 93.69)
+11-Sep-24 22:26:39 - Test: [100/391]	Time  0.886 ( 0.915)	Acc@1  49.22 ( 61.52)	Acc@5  84.38 ( 85.09)
+11-Sep-24 22:26:52 - Test: [150/391]	Time  0.883 ( 0.835)	Acc@1  68.75 ( 76.22)	Acc@5  95.31 ( 93.74)
+11-Sep-24 22:27:23 - Test: [150/391]	Time  0.884 ( 0.905)	Acc@1  58.59 ( 61.94)	Acc@5  94.53 ( 85.69)
+11-Sep-24 22:27:36 - Test: [200/391]	Time  0.885 ( 0.848)	Acc@1  61.72 ( 73.01)	Acc@5  91.41 ( 92.00)
+11-Sep-24 22:28:07 - Test: [200/391]	Time  0.885 ( 0.900)	Acc@1  49.22 ( 59.35)	Acc@5  74.22 ( 83.60)
+11-Sep-24 22:28:20 - Test: [250/391]	Time  0.884 ( 0.855)	Acc@1  82.03 ( 71.50)	Acc@5  91.41 ( 91.01)
+11-Sep-24 22:28:52 - Test: [250/391]	Time  0.885 ( 0.897)	Acc@1  75.78 ( 58.21)	Acc@5  85.16 ( 82.44)
+11-Sep-24 22:29:05 - Test: [300/391]	Time  0.886 ( 0.860)	Acc@1  72.66 ( 70.31)	Acc@5  85.16 ( 90.15)
+11-Sep-24 22:29:36 - Test: [300/391]	Time  0.885 ( 0.895)	Acc@1  64.84 ( 57.04)	Acc@5  81.25 ( 81.34)
+11-Sep-24 22:29:49 - Test: [350/391]	Time  0.883 ( 0.864)	Acc@1  70.31 ( 69.29)	Acc@5  85.94 ( 89.51)
+11-Sep-24 22:30:20 - Test: [350/391]	Time  0.886 ( 0.894)	Acc@1  51.56 ( 56.42)	Acc@5  78.91 ( 80.65)
+11-Sep-24 22:30:24 - Test: [390/391]	Time  0.754 ( 0.865)	Acc@1  48.75 ( 69.50)	Acc@5  78.75 ( 89.65)
+11-Sep-24 22:30:40 - Test: [390/391]	Time  0.333 ( 0.852)	Acc@1  28.75 ( 56.71)	Acc@5  72.50 ( 80.92)
+11-Sep-24 22:44:13 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+11-Sep-24 22:44:15 -     Number of QuantLinear: 49
+11-Sep-24 22:44:15 -     Number of QuantConv2d: 1
+11-Sep-24 22:44:15 -     Number of QuantAct: 149
+11-Sep-24 22:44:15 -     Number of IntLayerNorm: 25
+11-Sep-24 22:44:15 -     Number of IntGELU: 12
+11-Sep-24 22:44:15 -     Number of IntSoftmax: 12
+11-Sep-24 22:44:15 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:44:15 -     - type : Symmetric_UINT4
+11-Sep-24 22:44:15 -     Number of QuantMatMul: 24
+11-Sep-24 22:44:26 - Test: [  0/391]	Time  2.660 ( 2.660)	Acc@1   9.38 (  9.38)	Acc@5  17.97 ( 17.97)
+11-Sep-24 22:45:15 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+11-Sep-24 22:45:17 -     Number of QuantLinear: 49
+11-Sep-24 22:45:17 -     Number of QuantConv2d: 1
+11-Sep-24 22:45:17 -     Number of QuantAct: 149
+11-Sep-24 22:45:17 -     Number of IntLayerNorm: 25
+11-Sep-24 22:45:17 -     Number of IntGELU: 12
+11-Sep-24 22:45:17 -     Number of IntSoftmax: 12
+11-Sep-24 22:45:17 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:45:17 -     - type : Symmetric_UINT4
+11-Sep-24 22:45:17 -     Number of QuantMatMul: 24
+11-Sep-24 22:45:33 - Test: [  0/391]	Time  2.858 ( 2.858)	Acc@1  28.91 ( 28.91)	Acc@5  35.94 ( 35.94)
+11-Sep-24 22:46:17 - Test: [ 50/391]	Time  0.896 ( 0.934)	Acc@1  25.78 ( 19.32)	Acc@5  39.84 ( 27.25)
+11-Sep-24 22:47:02 - Test: [100/391]	Time  0.897 ( 0.915)	Acc@1  31.25 ( 20.09)	Acc@5  50.78 ( 33.63)
+11-Sep-24 22:47:47 - Test: [150/391]	Time  0.895 ( 0.909)	Acc@1   2.34 ( 18.24)	Acc@5   7.03 ( 31.29)
+11-Sep-24 22:48:32 - Test: [200/391]	Time  0.896 ( 0.906)	Acc@1   5.47 ( 16.46)	Acc@5  13.28 ( 27.99)
+11-Sep-24 22:53:29 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_Int_Quantizer')
+11-Sep-24 22:53:31 -     Number of QuantLinear: 49
+11-Sep-24 22:53:31 -     Number of QuantConv2d: 1
+11-Sep-24 22:53:31 -     Number of QuantAct: 137
+11-Sep-24 22:53:31 -     Number of IntLayerNorm: 25
+11-Sep-24 22:53:31 -     Number of IntGELU: 12
+11-Sep-24 22:53:31 -     Number of IntSoftmax: 12
+11-Sep-24 22:53:31 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:53:31 -     - type : Log2_Int_Quantizer
+11-Sep-24 22:53:31 -     Number of QuantMatMul: 24
+11-Sep-24 22:53:58 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_Int_Quantizer')
+11-Sep-24 22:54:00 -     Number of QuantLinear: 49
+11-Sep-24 22:54:00 -     Number of QuantConv2d: 1
+11-Sep-24 22:54:00 -     Number of QuantAct: 137
+11-Sep-24 22:54:00 -     Number of IntLayerNorm: 25
+11-Sep-24 22:54:00 -     Number of IntGELU: 12
+11-Sep-24 22:54:00 -     Number of IntSoftmax: 12
+11-Sep-24 22:54:00 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:54:00 -     - type : Log2_Int_Quantizer
+11-Sep-24 22:54:00 -     Number of QuantMatMul: 24
+11-Sep-24 22:57:18 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_Int_Quantizer')
+11-Sep-24 22:57:20 -     Number of QuantLinear: 49
+11-Sep-24 22:57:20 -     Number of QuantConv2d: 1
+11-Sep-24 22:57:20 -     Number of QuantAct: 137
+11-Sep-24 22:57:20 -     Number of IntLayerNorm: 25
+11-Sep-24 22:57:20 -     Number of IntGELU: 12
+11-Sep-24 22:57:20 -     Number of IntSoftmax: 12
+11-Sep-24 22:57:20 -     Number of Log2_Quantizer: 0
+11-Sep-24 22:57:20 -     - type : Log2_Int_Quantizer
+11-Sep-24 22:57:20 -     Number of QuantMatMul: 24
+11-Sep-24 23:00:23 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Symmetric_UINT4')
+11-Sep-24 23:00:25 -     Number of QuantLinear: 49
+11-Sep-24 23:00:25 -     Number of QuantConv2d: 1
+11-Sep-24 23:00:25 -     Number of QuantAct: 149
+11-Sep-24 23:00:25 -     Number of IntLayerNorm: 25
+11-Sep-24 23:00:25 -     Number of IntGELU: 12
+11-Sep-24 23:00:25 -     Number of IntSoftmax: 12
+11-Sep-24 23:00:25 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:00:25 -     - type : Symmetric_UINT4
+11-Sep-24 23:00:25 -     Number of QuantMatMul: 24
+11-Sep-24 23:00:32 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+11-Sep-24 23:00:35 -     Number of QuantLinear: 49
+11-Sep-24 23:00:35 -     Number of QuantConv2d: 1
+11-Sep-24 23:00:35 -     Number of QuantAct: 149
+11-Sep-24 23:00:35 -     Number of IntLayerNorm: 25
+11-Sep-24 23:00:35 -     Number of IntGELU: 12
+11-Sep-24 23:00:35 -     Number of IntSoftmax: 12
+11-Sep-24 23:00:35 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:00:35 -     - type : Symmetric_UINT4
+11-Sep-24 23:00:35 -     Number of QuantMatMul: 24
+11-Sep-24 23:00:37 - Test: [  0/391]	Time  3.926 ( 3.926)	Acc@1  37.50 ( 37.50)	Acc@5  55.47 ( 55.47)
+11-Sep-24 23:01:07 - Test: [  0/391]	Time  4.137 ( 4.137)	Acc@1  28.91 ( 28.91)	Acc@5  35.94 ( 35.94)
+11-Sep-24 23:01:18 - Test: [ 50/391]	Time  1.209 ( 0.875)	Acc@1  28.91 ( 23.19)	Acc@5  60.94 ( 39.75)
+11-Sep-24 23:02:19 - Test: [100/391]	Time  1.228 ( 1.042)	Acc@1  30.47 ( 24.24)	Acc@5  57.81 ( 44.93)
+11-Sep-24 23:02:22 - Test: [ 50/391]	Time  1.486 ( 1.542)	Acc@1  25.78 ( 19.32)	Acc@5  39.84 ( 27.25)
+11-Sep-24 23:03:19 - Test: [150/391]	Time  1.213 ( 1.098)	Acc@1   5.47 ( 22.68)	Acc@5  18.75 ( 42.23)
+11-Sep-24 23:03:37 - Test: [100/391]	Time  1.489 ( 1.519)	Acc@1  31.25 ( 20.09)	Acc@5  50.78 ( 33.63)
+11-Sep-24 23:04:20 - Test: [200/391]	Time  1.199 ( 1.127)	Acc@1   1.56 ( 20.17)	Acc@5  13.28 ( 37.78)
+11-Sep-24 23:04:52 - Test: [150/391]	Time  1.516 ( 1.512)	Acc@1   2.34 ( 18.24)	Acc@5   7.03 ( 31.29)
+11-Sep-24 23:05:21 - Test: [250/391]	Time  1.217 ( 1.144)	Acc@1  12.50 ( 18.04)	Acc@5  28.12 ( 34.55)
+11-Sep-24 23:06:06 - Test: [200/391]	Time  1.498 ( 1.508)	Acc@1   5.47 ( 16.46)	Acc@5  13.28 ( 27.99)
+11-Sep-24 23:06:22 - Test: [300/391]	Time  1.201 ( 1.157)	Acc@1  16.41 ( 16.77)	Acc@5  32.81 ( 32.55)
+11-Sep-24 23:07:21 - Test: [250/391]	Time  1.502 ( 1.505)	Acc@1   4.69 ( 14.68)	Acc@5  14.84 ( 25.48)
+11-Sep-24 23:07:22 - Test: [350/391]	Time  1.260 ( 1.165)	Acc@1  13.28 ( 15.92)	Acc@5  31.25 ( 31.08)
+11-Sep-24 23:08:11 - Test: [390/391]	Time  0.998 ( 1.169)	Acc@1  10.00 ( 15.12)	Acc@5  18.75 ( 29.76)
+11-Sep-24 23:08:13 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Symmetric_UINT8')
+11-Sep-24 23:08:16 -     Number of QuantLinear: 49
+11-Sep-24 23:08:16 -     Number of QuantConv2d: 1
+11-Sep-24 23:08:16 -     Number of QuantAct: 149
+11-Sep-24 23:08:16 -     Number of IntLayerNorm: 25
+11-Sep-24 23:08:16 -     Number of IntGELU: 12
+11-Sep-24 23:08:16 -     Number of IntSoftmax: 12
+11-Sep-24 23:08:16 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:08:16 -     - type : Symmetric_UINT8
+11-Sep-24 23:08:16 -     Number of QuantMatMul: 24
+11-Sep-24 23:08:28 - Test: [300/391]	Time  1.167 ( 1.479)	Acc@1  14.84 ( 13.74)	Acc@5  19.53 ( 23.87)
+11-Sep-24 23:08:51 - Test: [  0/391]	Time  3.645 ( 3.645)	Acc@1  89.84 ( 89.84)	Acc@5  96.09 ( 96.09)
+11-Sep-24 23:09:36 - Test: [350/391]	Time  1.489 ( 1.462)	Acc@1   9.38 ( 13.10)	Acc@5  17.19 ( 22.99)
+11-Sep-24 23:09:51 - Test: [ 50/391]	Time  1.197 ( 1.261)	Acc@1  90.62 ( 77.96)	Acc@5  96.88 ( 92.77)
+11-Sep-24 23:10:36 - Test: [390/391]	Time  1.141 ( 1.464)	Acc@1  17.50 ( 12.27)	Acc@5  23.75 ( 21.50)
+11-Sep-24 23:10:38 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT8')
+11-Sep-24 23:10:41 -     Number of QuantLinear: 49
+11-Sep-24 23:10:41 -     Number of QuantConv2d: 1
+11-Sep-24 23:10:41 -     Number of QuantAct: 149
+11-Sep-24 23:10:41 -     Number of IntLayerNorm: 25
+11-Sep-24 23:10:41 -     Number of IntGELU: 12
+11-Sep-24 23:10:41 -     Number of IntSoftmax: 12
+11-Sep-24 23:10:41 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:10:41 -     - type : Symmetric_UINT8
+11-Sep-24 23:10:41 -     Number of QuantMatMul: 24
+11-Sep-24 23:10:42 - Test: [100/391]	Time  0.489 ( 1.138)	Acc@1  79.69 ( 75.97)	Acc@5  94.53 ( 93.33)
+11-Sep-24 23:11:13 - Test: [  0/391]	Time  3.957 ( 3.957)	Acc@1  91.41 ( 91.41)	Acc@5  98.44 ( 98.44)
+11-Sep-24 23:11:23 - Test: [150/391]	Time  1.213 ( 1.031)	Acc@1  67.97 ( 75.88)	Acc@5  94.53 ( 93.48)
+11-Sep-24 23:12:23 - Test: [200/391]	Time  1.223 ( 1.075)	Acc@1  61.72 ( 72.66)	Acc@5  92.97 ( 91.74)
+11-Sep-24 23:12:28 - Test: [ 50/391]	Time  1.493 ( 1.546)	Acc@1  94.53 ( 83.15)	Acc@5  99.22 ( 95.82)
+11-Sep-24 23:13:24 - Test: [250/391]	Time  1.200 ( 1.102)	Acc@1  81.25 ( 71.19)	Acc@5  91.41 ( 90.66)
+11-Sep-24 23:13:43 - Test: [100/391]	Time  1.500 ( 1.522)	Acc@1  85.16 ( 81.88)	Acc@5  96.88 ( 96.06)
+11-Sep-24 23:14:24 - Test: [300/391]	Time  1.239 ( 1.121)	Acc@1  71.09 ( 69.97)	Acc@5  84.38 ( 89.86)
+11-Sep-24 23:14:58 - Test: [150/391]	Time  1.495 ( 1.513)	Acc@1  75.78 ( 81.89)	Acc@5  96.09 ( 96.09)
+11-Sep-24 23:15:25 - Test: [350/391]	Time  1.203 ( 1.133)	Acc@1  65.62 ( 68.98)	Acc@5  85.94 ( 89.24)
+11-Sep-24 23:16:12 - Test: [200/391]	Time  1.489 ( 1.509)	Acc@1  71.88 ( 79.06)	Acc@5  93.75 ( 94.64)
+11-Sep-24 23:16:13 - Test: [390/391]	Time  0.967 ( 1.141)	Acc@1  45.00 ( 69.20)	Acc@5  80.00 ( 89.40)
+11-Sep-24 23:16:16 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_half_Int_Quantizer')
+11-Sep-24 23:16:18 -     Number of QuantLinear: 49
+11-Sep-24 23:16:18 -     Number of QuantConv2d: 1
+11-Sep-24 23:16:18 -     Number of QuantAct: 137
+11-Sep-24 23:16:18 -     Number of IntLayerNorm: 25
+11-Sep-24 23:16:18 -     Number of IntGELU: 12
+11-Sep-24 23:16:18 -     Number of IntSoftmax: 12
+11-Sep-24 23:16:18 -     Number of Log2_Quantizer: 12
+11-Sep-24 23:16:18 -     - type : Log2_half_Int_Quantizer
+11-Sep-24 23:16:18 -     Number of QuantMatMul: 24
+11-Sep-24 23:16:57 - Test: [  0/391]	Time  4.179 ( 4.179)	Acc@1  89.84 ( 89.84)	Acc@5  96.88 ( 96.88)
+11-Sep-24 23:17:15 - Test: [250/391]	Time  1.641 ( 1.460)	Acc@1  82.03 ( 77.84)	Acc@5  90.62 ( 93.92)
+11-Sep-24 23:18:16 - Test: [ 50/391]	Time  1.560 ( 1.635)	Acc@1  87.50 ( 77.77)	Acc@5  97.66 ( 93.43)
+11-Sep-24 23:18:37 - Test: [300/391]	Time  1.628 ( 1.488)	Acc@1  80.47 ( 76.97)	Acc@5  92.19 ( 93.22)
+11-Sep-24 23:19:36 - Test: [100/391]	Time  1.568 ( 1.617)	Acc@1  80.47 ( 75.67)	Acc@5  94.53 ( 93.82)
+11-Sep-24 23:19:58 - Test: [350/391]	Time  1.628 ( 1.507)	Acc@1  71.88 ( 76.21)	Acc@5  89.06 ( 92.86)
+11-Sep-24 23:20:56 - Test: [150/391]	Time  1.566 ( 1.607)	Acc@1  69.53 ( 75.48)	Acc@5  96.09 ( 93.82)
+11-Sep-24 23:21:03 - Test: [390/391]	Time  1.264 ( 1.518)	Acc@1  56.25 ( 76.22)	Acc@5  90.00 ( 92.89)
+11-Sep-24 23:21:05 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2_half_Int_Quantizer')
+11-Sep-24 23:21:08 -     Number of QuantLinear: 49
+11-Sep-24 23:21:08 -     Number of QuantConv2d: 1
+11-Sep-24 23:21:08 -     Number of QuantAct: 137
+11-Sep-24 23:21:08 -     Number of IntLayerNorm: 25
+11-Sep-24 23:21:08 -     Number of IntGELU: 12
+11-Sep-24 23:21:08 -     Number of IntSoftmax: 12
+11-Sep-24 23:21:08 -     Number of Log2_Quantizer: 12
+11-Sep-24 23:21:08 -     - type : Log2_half_Int_Quantizer
+11-Sep-24 23:21:08 -     Number of QuantMatMul: 24
+11-Sep-24 23:21:48 - Test: [200/391]	Time  0.787 ( 1.466)	Acc@1  60.94 ( 72.58)	Acc@5  89.06 ( 92.02)
+11-Sep-24 23:21:50 - Test: [  0/391]	Time  4.697 ( 4.697)	Acc@1  89.06 ( 89.06)	Acc@5  98.44 ( 98.44)
+11-Sep-24 23:23:12 - Test: [250/391]	Time  1.681 ( 1.512)	Acc@1  85.16 ( 71.23)	Acc@5  94.53 ( 90.99)
+11-Sep-24 23:23:43 - Test: [ 50/391]	Time  2.265 ( 2.309)	Acc@1  96.09 ( 83.20)	Acc@5  99.22 ( 95.74)
+11-Sep-24 23:24:38 - Test: [300/391]	Time  1.707 ( 1.545)	Acc@1  74.22 ( 70.04)	Acc@5  87.50 ( 90.20)
+11-Sep-24 23:25:37 - Test: [100/391]	Time  2.284 ( 2.287)	Acc@1  86.72 ( 81.99)	Acc@5  96.09 ( 95.92)
+11-Sep-24 23:26:04 - Test: [350/391]	Time  1.787 ( 1.568)	Acc@1  70.31 ( 69.09)	Acc@5  86.72 ( 89.57)
+11-Sep-24 23:27:11 - Test: [390/391]	Time  1.432 ( 1.582)	Acc@1  43.75 ( 69.26)	Acc@5  80.00 ( 89.64)
+11-Sep-24 23:27:14 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2_Int_Quantizer')
+11-Sep-24 23:27:16 -     Number of QuantLinear: 49
+11-Sep-24 23:27:16 -     Number of QuantConv2d: 1
+11-Sep-24 23:27:16 -     Number of QuantAct: 137
+11-Sep-24 23:27:16 -     Number of IntLayerNorm: 25
+11-Sep-24 23:27:16 -     Number of IntGELU: 12
+11-Sep-24 23:27:16 -     Number of IntSoftmax: 12
+11-Sep-24 23:27:16 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:27:16 -     - type : Log2_Int_Quantizer
+11-Sep-24 23:27:16 -     Number of QuantMatMul: 24
+11-Sep-24 23:27:23 - Test: [150/391]	Time  1.730 ( 2.236)	Acc@1  78.12 ( 81.89)	Acc@5  93.75 ( 96.01)
+11-Sep-24 23:27:59 - Test: [  0/391]	Time  4.297 ( 4.297)	Acc@1  92.19 ( 92.19)	Acc@5  98.44 ( 98.44)
+11-Sep-24 23:29:05 - Test: [200/391]	Time  2.268 ( 2.187)	Acc@1  72.66 ( 79.24)	Acc@5  92.97 ( 94.59)
+11-Sep-24 23:29:24 - Test: [ 50/391]	Time  1.673 ( 1.734)	Acc@1  89.84 ( 77.71)	Acc@5  96.88 ( 93.41)
+11-Sep-24 23:30:48 - Test: [100/391]	Time  1.680 ( 1.707)	Acc@1  75.78 ( 75.03)	Acc@5  94.53 ( 92.79)
+11-Sep-24 23:30:59 - Test: [250/391]	Time  2.317 ( 2.205)	Acc@1  86.72 ( 78.05)	Acc@5  89.84 ( 93.82)
+11-Sep-24 23:32:12 - Test: [150/391]	Time  1.701 ( 1.699)	Acc@1  69.53 ( 75.01)	Acc@5  94.53 ( 92.92)
+11-Sep-24 23:32:53 - Test: [300/391]	Time  2.274 ( 2.218)	Acc@1  82.81 ( 77.05)	Acc@5  92.19 ( 93.12)
+11-Sep-24 23:33:36 - Test: [200/391]	Time  1.690 ( 1.694)	Acc@1  60.94 ( 71.83)	Acc@5  87.50 ( 90.84)
+11-Sep-24 23:34:47 - Test: [350/391]	Time  2.281 ( 2.226)	Acc@1  66.41 ( 76.29)	Acc@5  89.84 ( 92.72)
+11-Sep-24 23:35:00 - Test: [250/391]	Time  1.692 ( 1.692)	Acc@1  81.25 ( 70.30)	Acc@5  92.19 ( 89.77)
+11-Sep-24 23:36:18 - Test: [390/391]	Time  1.687 ( 2.230)	Acc@1  56.25 ( 76.20)	Acc@5  90.00 ( 92.76)
+11-Sep-24 23:36:20 - Test: [300/391]	Time  0.671 ( 1.677)	Acc@1  73.44 ( 68.91)	Acc@5  84.38 ( 88.82)
+11-Sep-24 23:36:20 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2_Int_Quantizer')
+11-Sep-24 23:36:23 -     Number of QuantLinear: 49
+11-Sep-24 23:36:23 -     Number of QuantConv2d: 1
+11-Sep-24 23:36:23 -     Number of QuantAct: 137
+11-Sep-24 23:36:23 -     Number of IntLayerNorm: 25
+11-Sep-24 23:36:23 -     Number of IntGELU: 12
+11-Sep-24 23:36:23 -     Number of IntSoftmax: 12
+11-Sep-24 23:36:23 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:36:23 -     - type : Log2_Int_Quantizer
+11-Sep-24 23:36:23 -     Number of QuantMatMul: 24
+11-Sep-24 23:37:05 - Test: [  0/391]	Time  4.957 ( 4.957)	Acc@1  93.75 ( 93.75)	Acc@5  99.22 ( 99.22)
+11-Sep-24 23:37:15 - Test: [350/391]	Time  1.705 ( 1.595)	Acc@1  65.62 ( 67.94)	Acc@5  83.59 ( 88.14)
+11-Sep-24 23:38:23 - Test: [390/391]	Time  1.370 ( 1.605)	Acc@1  43.75 ( 68.21)	Acc@5  78.75 ( 88.37)
+11-Sep-24 23:38:25 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='Log2Quantizer')
+11-Sep-24 23:38:28 -     Number of QuantLinear: 49
+11-Sep-24 23:38:28 -     Number of QuantConv2d: 1
+11-Sep-24 23:38:28 -     Number of QuantAct: 137
+11-Sep-24 23:38:28 -     Number of IntLayerNorm: 25
+11-Sep-24 23:38:28 -     Number of IntGELU: 12
+11-Sep-24 23:38:28 -     Number of IntSoftmax: 12
+11-Sep-24 23:38:28 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:38:28 -     - type : Log2Quantizer
+11-Sep-24 23:38:28 -     Number of QuantMatMul: 24
+11-Sep-24 23:38:47 - Test: [ 50/391]	Time  1.636 ( 2.087)	Acc@1  95.31 ( 83.01)	Acc@5  98.44 ( 95.71)
+11-Sep-24 23:39:07 - Test: [  0/391]	Time  3.901 ( 3.901)	Acc@1  88.28 ( 88.28)	Acc@5  96.09 ( 96.09)
+11-Sep-24 23:40:14 - Test: [ 50/391]	Time  1.328 ( 1.389)	Acc@1  89.84 ( 76.41)	Acc@5  96.88 ( 92.31)
+11-Sep-24 23:40:24 - Test: [100/391]	Time  2.059 ( 2.016)	Acc@1  88.28 ( 82.02)	Acc@5  96.88 ( 96.09)
+11-Sep-24 23:41:21 - Test: [100/391]	Time  1.354 ( 1.363)	Acc@1  77.34 ( 74.75)	Acc@5  95.31 ( 92.84)
+11-Sep-24 23:42:07 - Test: [150/391]	Time  2.058 ( 2.030)	Acc@1  76.56 ( 81.93)	Acc@5  96.88 ( 96.19)
+11-Sep-24 23:42:28 - Test: [150/391]	Time  1.328 ( 1.354)	Acc@1  66.41 ( 74.69)	Acc@5  94.53 ( 92.96)
+11-Sep-24 23:43:35 - Test: [200/391]	Time  1.352 ( 1.351)	Acc@1  57.81 ( 71.42)	Acc@5  89.06 ( 91.06)
+11-Sep-24 23:43:50 - Test: [200/391]	Time  2.050 ( 2.037)	Acc@1  67.19 ( 79.18)	Acc@5  92.97 ( 94.72)
+11-Sep-24 23:44:42 - Test: [250/391]	Time  1.329 ( 1.348)	Acc@1  79.69 ( 69.86)	Acc@5  92.19 ( 89.87)
+11-Sep-24 23:45:33 - Test: [250/391]	Time  2.051 ( 2.041)	Acc@1  85.94 ( 77.95)	Acc@5  91.41 ( 93.93)
+11-Sep-24 23:45:49 - Test: [300/391]	Time  1.343 ( 1.346)	Acc@1  72.66 ( 68.57)	Acc@5  84.38 ( 89.02)
+11-Sep-24 23:46:55 - Test: [350/391]	Time  1.329 ( 1.345)	Acc@1  63.28 ( 67.54)	Acc@5  84.38 ( 88.31)
+11-Sep-24 23:47:16 - Test: [300/391]	Time  2.052 ( 2.044)	Acc@1  80.47 ( 76.96)	Acc@5  92.19 ( 93.28)
+11-Sep-24 23:47:49 - Test: [390/391]	Time  1.113 ( 1.343)	Acc@1  43.75 ( 67.69)	Acc@5  81.25 ( 88.50)
+11-Sep-24 23:47:51 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='LogSqrt2Quantizer')
+11-Sep-24 23:47:54 -     Number of QuantLinear: 49
+11-Sep-24 23:47:54 -     Number of QuantConv2d: 1
+11-Sep-24 23:47:54 -     Number of QuantAct: 137
+11-Sep-24 23:47:54 -     Number of IntLayerNorm: 25
+11-Sep-24 23:47:54 -     Number of IntGELU: 12
+11-Sep-24 23:47:54 -     Number of IntSoftmax: 12
+11-Sep-24 23:47:54 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:47:54 -     - type : LogSqrt2Quantizer
+11-Sep-24 23:47:54 -     Number of QuantMatMul: 24
+11-Sep-24 23:48:33 - Test: [  0/391]	Time  4.004 ( 4.004)	Acc@1  88.28 ( 88.28)	Acc@5  96.09 ( 96.09)
+11-Sep-24 23:48:45 - Test: [350/391]	Time  2.082 ( 2.007)	Acc@1  71.09 ( 76.21)	Acc@5  89.06 ( 92.91)
+11-Sep-24 23:49:41 - Test: [ 50/391]	Time  1.367 ( 1.405)	Acc@1  89.06 ( 77.96)	Acc@5  96.88 ( 93.23)
+11-Sep-24 23:50:07 - Test: [390/391]	Time  1.547 ( 2.013)	Acc@1  55.00 ( 76.17)	Acc@5  91.25 ( 92.95)
+11-Sep-24 23:50:10 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2Quantizer')
+11-Sep-24 23:50:13 -     Number of QuantLinear: 49
+11-Sep-24 23:50:13 -     Number of QuantConv2d: 1
+11-Sep-24 23:50:13 -     Number of QuantAct: 137
+11-Sep-24 23:50:13 -     Number of IntLayerNorm: 25
+11-Sep-24 23:50:13 -     Number of IntGELU: 12
+11-Sep-24 23:50:13 -     Number of IntSoftmax: 12
+11-Sep-24 23:50:13 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:50:13 -     - type : Log2Quantizer
+11-Sep-24 23:50:13 -     Number of QuantMatMul: 24
+11-Sep-24 23:50:27 - Test: [100/391]	Time  0.754 ( 1.163)	Acc@1  80.47 ( 76.01)	Acc@5  94.53 ( 93.63)
+11-Sep-24 23:50:44 - Test: [  0/391]	Time  4.073 ( 4.073)	Acc@1  86.72 ( 86.72)	Acc@5  98.44 ( 98.44)
+11-Sep-24 23:51:15 - Test: [150/391]	Time  1.181 ( 1.097)	Acc@1  69.53 ( 75.87)	Acc@5  95.31 ( 93.72)
+11-Sep-24 23:51:59 - Test: [ 50/391]	Time  1.497 ( 1.544)	Acc@1  96.09 ( 82.49)	Acc@5 100.00 ( 95.51)
+11-Sep-24 23:52:15 - Test: [200/391]	Time  1.202 ( 1.121)	Acc@1  60.94 ( 72.81)	Acc@5  88.28 ( 91.86)
+11-Sep-24 23:53:13 - Test: [100/391]	Time  1.486 ( 1.519)	Acc@1  85.16 ( 81.29)	Acc@5  96.88 ( 95.68)
+11-Sep-24 23:53:14 - Test: [250/391]	Time  1.201 ( 1.136)	Acc@1  81.25 ( 71.31)	Acc@5  92.97 ( 90.82)
+11-Sep-24 23:54:14 - Test: [300/391]	Time  1.190 ( 1.145)	Acc@1  71.88 ( 69.99)	Acc@5  84.38 ( 89.93)
+11-Sep-24 23:54:28 - Test: [150/391]	Time  1.493 ( 1.512)	Acc@1  74.22 ( 81.29)	Acc@5  94.53 ( 95.79)
+11-Sep-24 23:55:13 - Test: [350/391]	Time  1.177 ( 1.152)	Acc@1  71.09 ( 69.06)	Acc@5  88.28 ( 89.29)
+11-Sep-24 23:55:43 - Test: [200/391]	Time  1.489 ( 1.508)	Acc@1  74.22 ( 78.63)	Acc@5  92.97 ( 94.33)
+11-Sep-24 23:56:01 - Test: [390/391]	Time  0.976 ( 1.155)	Acc@1  43.75 ( 69.19)	Acc@5  80.00 ( 89.40)
+11-Sep-24 23:56:04 - Namespace(model='deit_tiny', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=23, attn_quant='NoQuant')
+11-Sep-24 23:56:06 -     Number of QuantLinear: 49
+11-Sep-24 23:56:06 -     Number of QuantConv2d: 1
+11-Sep-24 23:56:06 -     Number of QuantAct: 137
+11-Sep-24 23:56:06 -     Number of IntLayerNorm: 25
+11-Sep-24 23:56:06 -     Number of IntGELU: 12
+11-Sep-24 23:56:06 -     Number of IntSoftmax: 12
+11-Sep-24 23:56:06 -     Number of Log2_Quantizer: 0
+11-Sep-24 23:56:06 -     - type : NoQuant
+11-Sep-24 23:56:06 -     Number of QuantMatMul: 24
+11-Sep-24 23:56:39 - Test: [  0/391]	Time  3.687 ( 3.687)	Acc@1  89.06 ( 89.06)	Acc@5  96.88 ( 96.88)
+11-Sep-24 23:56:43 - Test: [250/391]	Time  1.457 ( 1.446)	Acc@1  85.94 ( 77.50)	Acc@5  90.62 ( 93.62)
+11-Sep-24 23:57:37 - Test: [ 50/391]	Time  1.166 ( 1.198)	Acc@1  90.62 ( 77.96)	Acc@5  96.88 ( 93.31)
+11-Sep-24 23:57:56 - Test: [300/391]	Time  1.461 ( 1.449)	Acc@1  81.25 ( 76.57)	Acc@5  92.19 ( 92.99)
+11-Sep-24 23:58:34 - Test: [100/391]	Time  1.135 ( 1.174)	Acc@1  76.56 ( 76.20)	Acc@5  94.53 ( 93.69)
+11-Sep-24 23:59:09 - Test: [350/391]	Time  1.466 ( 1.451)	Acc@1  74.22 ( 75.76)	Acc@5  87.50 ( 92.62)
+11-Sep-24 23:59:32 - Test: [150/391]	Time  1.138 ( 1.165)	Acc@1  68.75 ( 76.22)	Acc@5  95.31 ( 93.74)
+12-Sep-24 00:00:07 - Test: [390/391]	Time  1.106 ( 1.451)	Acc@1  55.00 ( 75.77)	Acc@5  90.00 ( 92.69)
+12-Sep-24 00:00:10 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='LogSqrt2Quantizer')
+12-Sep-24 00:00:12 -     Number of QuantLinear: 49
+12-Sep-24 00:00:12 -     Number of QuantConv2d: 1
+12-Sep-24 00:00:12 -     Number of QuantAct: 137
+12-Sep-24 00:00:12 -     Number of IntLayerNorm: 25
+12-Sep-24 00:00:12 -     Number of IntGELU: 12
+12-Sep-24 00:00:12 -     Number of IntSoftmax: 12
+12-Sep-24 00:00:12 -     Number of Log2_Quantizer: 0
+12-Sep-24 00:00:12 -     - type : LogSqrt2Quantizer
+12-Sep-24 00:00:12 -     Number of QuantMatMul: 24
+12-Sep-24 00:00:17 - Test: [200/391]	Time  0.730 ( 1.101)	Acc@1  61.72 ( 73.01)	Acc@5  91.41 ( 92.00)
+12-Sep-24 00:00:43 - Test: [  0/391]	Time  4.433 ( 4.433)	Acc@1  89.06 ( 89.06)	Acc@5  98.44 ( 98.44)
+12-Sep-24 00:00:58 - Test: [250/391]	Time  1.141 ( 1.044)	Acc@1  82.03 ( 71.50)	Acc@5  91.41 ( 91.01)
+12-Sep-24 00:01:55 - Test: [300/391]	Time  1.143 ( 1.061)	Acc@1  72.66 ( 70.31)	Acc@5  85.16 ( 90.15)
+12-Sep-24 00:01:59 - Test: [ 50/391]	Time  1.505 ( 1.568)	Acc@1  94.53 ( 83.50)	Acc@5  99.22 ( 96.29)
+12-Sep-24 00:02:52 - Test: [350/391]	Time  1.143 ( 1.073)	Acc@1  70.31 ( 69.29)	Acc@5  85.94 ( 89.51)
+12-Sep-24 00:03:14 - Test: [100/391]	Time  1.502 ( 1.540)	Acc@1  85.94 ( 82.09)	Acc@5  97.66 ( 96.43)
+12-Sep-24 00:03:38 - Test: [390/391]	Time  0.990 ( 1.081)	Acc@1  48.75 ( 69.50)	Acc@5  78.75 ( 89.65)
+12-Sep-24 00:04:09 - Test: [150/391]	Time  0.913 ( 1.394)	Acc@1  75.78 ( 82.15)	Acc@5  97.66 ( 96.44)
+12-Sep-24 00:04:55 - Test: [200/391]	Time  0.914 ( 1.274)	Acc@1  75.78 ( 79.47)	Acc@5  92.97 ( 94.85)
+12-Sep-24 00:05:41 - Test: [250/391]	Time  0.913 ( 1.203)	Acc@1  83.59 ( 78.18)	Acc@5  89.06 ( 94.08)
+12-Sep-24 00:06:26 - Test: [300/391]	Time  0.916 ( 1.155)	Acc@1  78.91 ( 77.25)	Acc@5  91.41 ( 93.45)
+12-Sep-24 00:07:12 - Test: [350/391]	Time  0.914 ( 1.120)	Acc@1  70.31 ( 76.48)	Acc@5  89.84 ( 93.00)
+12-Sep-24 00:07:48 - Test: [390/391]	Time  0.656 ( 1.098)	Acc@1  52.50 ( 76.41)	Acc@5  91.25 ( 93.02)
+12-Sep-24 00:07:51 - Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='NoQuant')
+12-Sep-24 00:07:53 -     Number of QuantLinear: 49
+12-Sep-24 00:07:53 -     Number of QuantConv2d: 1
+12-Sep-24 00:07:53 -     Number of QuantAct: 137
+12-Sep-24 00:07:53 -     Number of IntLayerNorm: 25
+12-Sep-24 00:07:53 -     Number of IntGELU: 12
+12-Sep-24 00:07:53 -     Number of IntSoftmax: 12
+12-Sep-24 00:07:53 -     Number of Log2_Quantizer: 0
+12-Sep-24 00:07:53 -     - type : NoQuant
+12-Sep-24 00:07:53 -     Number of QuantMatMul: 24
+12-Sep-24 00:08:08 - Test: [  0/391]	Time  2.967 ( 2.967)	Acc@1  88.28 ( 88.28)	Acc@5  99.22 ( 99.22)
+12-Sep-24 00:08:50 - Test: [ 50/391]	Time  0.846 ( 0.888)	Acc@1  94.53 ( 83.07)	Acc@5  99.22 ( 95.88)
+12-Sep-24 00:09:32 - Test: [100/391]	Time  0.848 ( 0.867)	Acc@1  85.16 ( 81.89)	Acc@5  96.09 ( 96.10)
+12-Sep-24 00:10:15 - Test: [150/391]	Time  0.846 ( 0.860)	Acc@1  75.78 ( 81.93)	Acc@5  96.88 ( 96.27)
+12-Sep-24 00:10:57 - Test: [200/391]	Time  0.846 ( 0.857)	Acc@1  72.66 ( 79.41)	Acc@5  92.97 ( 94.85)
+12-Sep-24 00:11:39 - Test: [250/391]	Time  0.846 ( 0.855)	Acc@1  86.72 ( 78.09)	Acc@5  90.62 ( 94.02)
+12-Sep-24 00:12:22 - Test: [300/391]	Time  0.847 ( 0.853)	Acc@1  80.47 ( 77.09)	Acc@5  91.41 ( 93.42)
+12-Sep-24 00:13:04 - Test: [350/391]	Time  0.847 ( 0.852)	Acc@1  67.97 ( 76.34)	Acc@5  85.94 ( 93.00)
+12-Sep-24 00:13:37 - Test: [390/391]	Time  0.611 ( 0.851)	Acc@1  53.75 ( 76.31)	Acc@5  87.50 ( 93.02)

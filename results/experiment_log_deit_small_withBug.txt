@@ -1,0 +1,369 @@
+Running experiment with attn_quant=Symmetric_UINT4
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT4')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 149
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : Symmetric_UINT4
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  4.137 ( 4.137)	Acc@1  28.91 ( 28.91)	Acc@5  35.94 ( 35.94)
+Test: [ 50/391]	Time  1.486 ( 1.542)	Acc@1  25.78 ( 19.32)	Acc@5  39.84 ( 27.25)
+Test: [100/391]	Time  1.489 ( 1.519)	Acc@1  31.25 ( 20.09)	Acc@5  50.78 ( 33.63)
+Test: [150/391]	Time  1.516 ( 1.512)	Acc@1   2.34 ( 18.24)	Acc@5   7.03 ( 31.29)
+Test: [200/391]	Time  1.498 ( 1.508)	Acc@1   5.47 ( 16.46)	Acc@5  13.28 ( 27.99)
+Test: [250/391]	Time  1.502 ( 1.505)	Acc@1   4.69 ( 14.68)	Acc@5  14.84 ( 25.48)
+Test: [300/391]	Time  1.167 ( 1.479)	Acc@1  14.84 ( 13.74)	Acc@5  19.53 ( 23.87)
+Test: [350/391]	Time  1.489 ( 1.462)	Acc@1   9.38 ( 13.10)	Acc@5  17.19 ( 22.99)
+Test: [390/391]	Time  1.141 ( 1.464)	Acc@1  17.50 ( 12.27)	Acc@5  23.75 ( 21.50)
+ * Prec@1 12.266 Prec@5 21.502
+Time: 603.99
+-----------------------------------------------------
+Running experiment with attn_quant=Symmetric_UINT8
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Symmetric_UINT8')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 149
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : Symmetric_UINT8
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  3.957 ( 3.957)	Acc@1  91.41 ( 91.41)	Acc@5  98.44 ( 98.44)
+Test: [ 50/391]	Time  1.493 ( 1.546)	Acc@1  94.53 ( 83.15)	Acc@5  99.22 ( 95.82)
+Test: [100/391]	Time  1.500 ( 1.522)	Acc@1  85.16 ( 81.88)	Acc@5  96.88 ( 96.06)
+Test: [150/391]	Time  1.495 ( 1.513)	Acc@1  75.78 ( 81.89)	Acc@5  96.09 ( 96.09)
+Test: [200/391]	Time  1.489 ( 1.509)	Acc@1  71.88 ( 79.06)	Acc@5  93.75 ( 94.64)
+Test: [250/391]	Time  1.641 ( 1.460)	Acc@1  82.03 ( 77.84)	Acc@5  90.62 ( 93.92)
+Test: [300/391]	Time  1.628 ( 1.488)	Acc@1  80.47 ( 76.97)	Acc@5  92.19 ( 93.22)
+Test: [350/391]	Time  1.628 ( 1.507)	Acc@1  71.88 ( 76.21)	Acc@5  89.06 ( 92.86)
+Test: [390/391]	Time  1.264 ( 1.518)	Acc@1  56.25 ( 76.22)	Acc@5  90.00 ( 92.89)
+ * Prec@1 76.220 Prec@5 92.892
+Time: 624.41
+-----------------------------------------------------
+Running experiment with attn_quant=Log2_half_Int_Quantizer
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2_half_Int_Quantizer')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 12
+    - type : Log2_half_Int_Quantizer
+    Number of QuantMatMul: 24
+.....17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+..17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+...17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+.....17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+.17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+...........17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+.17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+....calib done
+Test: [  0/391]	Time  4.697 ( 4.697)	Acc@1  89.06 ( 89.06)	Acc@5  98.44 ( 98.44)
+Test: [ 50/391]	Time  2.265 ( 2.309)	Acc@1  96.09 ( 83.20)	Acc@5  99.22 ( 95.74)
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+Test: [100/391]	Time  2.284 ( 2.287)	Acc@1  86.72 ( 81.99)	Acc@5  96.09 ( 95.92)
+Test: [150/391]	Time  1.730 ( 2.236)	Acc@1  78.12 ( 81.89)	Acc@5  93.75 ( 96.01)
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+Test: [200/391]	Time  2.268 ( 2.187)	Acc@1  72.66 ( 79.24)	Acc@5  92.97 ( 94.59)
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+17 tensor([  0.,   1.,   2.,   3.,   4.,   6.,   8.,  12.,  16.,  24.,  32.,  48.,
+         64.,  96., 128., 192., 256.], device='cuda:0')
+Test: [250/391]	Time  2.317 ( 2.205)	Acc@1  86.72 ( 78.05)	Acc@5  89.84 ( 93.82)
+Test: [300/391]	Time  2.274 ( 2.218)	Acc@1  82.81 ( 77.05)	Acc@5  92.19 ( 93.12)
+Test: [350/391]	Time  2.281 ( 2.226)	Acc@1  66.41 ( 76.29)	Acc@5  89.84 ( 92.72)
+Test: [390/391]	Time  1.687 ( 2.230)	Acc@1  56.25 ( 76.20)	Acc@5  90.00 ( 92.76)
+ * Prec@1 76.202 Prec@5 92.762
+Time: 912.51
+-----------------------------------------------------
+Running experiment with attn_quant=Log2_Int_Quantizer
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2_Int_Quantizer')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : Log2_Int_Quantizer
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  4.957 ( 4.957)	Acc@1  93.75 ( 93.75)	Acc@5  99.22 ( 99.22)
+Test: [ 50/391]	Time  1.636 ( 2.087)	Acc@1  95.31 ( 83.01)	Acc@5  98.44 ( 95.71)
+Test: [100/391]	Time  2.059 ( 2.016)	Acc@1  88.28 ( 82.02)	Acc@5  96.88 ( 96.09)
+Test: [150/391]	Time  2.058 ( 2.030)	Acc@1  76.56 ( 81.93)	Acc@5  96.88 ( 96.19)
+Test: [200/391]	Time  2.050 ( 2.037)	Acc@1  67.19 ( 79.18)	Acc@5  92.97 ( 94.72)
+Test: [250/391]	Time  2.051 ( 2.041)	Acc@1  85.94 ( 77.95)	Acc@5  91.41 ( 93.93)
+Test: [300/391]	Time  2.052 ( 2.044)	Acc@1  80.47 ( 76.96)	Acc@5  92.19 ( 93.28)
+Test: [350/391]	Time  2.082 ( 2.007)	Acc@1  71.09 ( 76.21)	Acc@5  89.06 ( 92.91)
+Test: [390/391]	Time  1.547 ( 2.013)	Acc@1  55.00 ( 76.17)	Acc@5  91.25 ( 92.95)
+ * Prec@1 76.166 Prec@5 92.946
+Time: 827.29
+-----------------------------------------------------
+Running experiment with attn_quant=Log2Quantizer
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='Log2Quantizer')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : Log2Quantizer
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  4.073 ( 4.073)	Acc@1  86.72 ( 86.72)	Acc@5  98.44 ( 98.44)
+Test: [ 50/391]	Time  1.497 ( 1.544)	Acc@1  96.09 ( 82.49)	Acc@5 100.00 ( 95.51)
+Test: [100/391]	Time  1.486 ( 1.519)	Acc@1  85.16 ( 81.29)	Acc@5  96.88 ( 95.68)
+Test: [150/391]	Time  1.493 ( 1.512)	Acc@1  74.22 ( 81.29)	Acc@5  94.53 ( 95.79)
+Test: [200/391]	Time  1.489 ( 1.508)	Acc@1  74.22 ( 78.63)	Acc@5  92.97 ( 94.33)
+Test: [250/391]	Time  1.457 ( 1.446)	Acc@1  85.94 ( 77.50)	Acc@5  90.62 ( 93.62)
+Test: [300/391]	Time  1.461 ( 1.449)	Acc@1  81.25 ( 76.57)	Acc@5  92.19 ( 92.99)
+Test: [350/391]	Time  1.466 ( 1.451)	Acc@1  74.22 ( 75.76)	Acc@5  87.50 ( 92.62)
+Test: [390/391]	Time  1.106 ( 1.451)	Acc@1  55.00 ( 75.77)	Acc@5  90.00 ( 92.69)
+ * Prec@1 75.766 Prec@5 92.686
+Time: 597.30
+-----------------------------------------------------
+Running experiment with attn_quant=LogSqrt2Quantizer
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='LogSqrt2Quantizer')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : LogSqrt2Quantizer
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  4.433 ( 4.433)	Acc@1  89.06 ( 89.06)	Acc@5  98.44 ( 98.44)
+Test: [ 50/391]	Time  1.505 ( 1.568)	Acc@1  94.53 ( 83.50)	Acc@5  99.22 ( 96.29)
+Test: [100/391]	Time  1.502 ( 1.540)	Acc@1  85.94 ( 82.09)	Acc@5  97.66 ( 96.43)
+Test: [150/391]	Time  0.913 ( 1.394)	Acc@1  75.78 ( 82.15)	Acc@5  97.66 ( 96.44)
+Test: [200/391]	Time  0.914 ( 1.274)	Acc@1  75.78 ( 79.47)	Acc@5  92.97 ( 94.85)
+Test: [250/391]	Time  0.913 ( 1.203)	Acc@1  83.59 ( 78.18)	Acc@5  89.06 ( 94.08)
+Test: [300/391]	Time  0.916 ( 1.155)	Acc@1  78.91 ( 77.25)	Acc@5  91.41 ( 93.45)
+Test: [350/391]	Time  0.914 ( 1.120)	Acc@1  70.31 ( 76.48)	Acc@5  89.84 ( 93.00)
+Test: [390/391]	Time  0.656 ( 1.098)	Acc@1  52.50 ( 76.41)	Acc@5  91.25 ( 93.02)
+ * Prec@1 76.412 Prec@5 93.020
+Time: 458.57
+-----------------------------------------------------
+Running experiment with attn_quant=NoQuant
+Namespace(model='deit_small', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=15, intgelu_exp_n=29, attn_quant='NoQuant')
+Model: deit_small_patch16_224
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+IntSoftmax | n:  15
+IntGELU    | n:  29
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391]	Time  2.967 ( 2.967)	Acc@1  88.28 ( 88.28)	Acc@5  99.22 ( 99.22)
+Test: [ 50/391]	Time  0.846 ( 0.888)	Acc@1  94.53 ( 83.07)	Acc@5  99.22 ( 95.88)
+Test: [100/391]	Time  0.848 ( 0.867)	Acc@1  85.16 ( 81.89)	Acc@5  96.09 ( 96.10)
+Test: [150/391]	Time  0.846 ( 0.860)	Acc@1  75.78 ( 81.93)	Acc@5  96.88 ( 96.27)
+Test: [200/391]	Time  0.846 ( 0.857)	Acc@1  72.66 ( 79.41)	Acc@5  92.97 ( 94.85)
+Test: [250/391]	Time  0.846 ( 0.855)	Acc@1  86.72 ( 78.09)	Acc@5  90.62 ( 94.02)
+Test: [300/391]	Time  0.847 ( 0.853)	Acc@1  80.47 ( 77.09)	Acc@5  91.41 ( 93.42)
+Test: [350/391]	Time  0.847 ( 0.852)	Acc@1  67.97 ( 76.34)	Acc@5  85.94 ( 93.00)
+Test: [390/391]	Time  0.611 ( 0.851)	Acc@1  53.75 ( 76.31)	Acc@5  87.50 ( 93.02)
+ * Prec@1 76.314 Prec@5 93.018
+Time: 346.71
+-----------------------------------------------------

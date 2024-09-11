@@ -45,7 +45,7 @@ parser.add_argument(
     help="path to save log and quantized model",
 )
 parser.add_argument("--calib_batchsize", default=32, type=int)
-parser.add_argument("--calib_images", default=32, type=int)
+parser.add_argument("--calib_images", default=1024, type=int)
 parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
 
@@ -55,11 +55,12 @@ parser.add_argument("--intgelu_exp_n", default=23, type=int)
 
 parser.add_argument(
     "--attn_quant",
-    default="Log2_half_Quantizer",
+    default="Log2_Int_Quantizer",
     choices=[
         "Symmetric_UINT4",
         "Symmetric_UINT8",
-        "Log2_half_Quantizer",
+        "Log2_half_Int_Quantizer",
+        "Log2_Int_Quantizer",
         "Log2Quantizer",
         "LogSqrt2Quantizer",
         "NoQuant",
@@ -143,7 +144,7 @@ def main():
             cnt_int_gelu += 1
         elif isinstance(module, IntSoftmax):
             cnt_int_softmax += 1
-        elif isinstance(module, Log2_half_Quantizer):
+        elif isinstance(module, Log2_half_Int_Quantizer):
             cnt_log_act += 1
         elif isinstance(module, QuantMatMul):
             cnt_int_mm += 1
