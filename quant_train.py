@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description="I-ViT")
 
 parser.add_argument(
     "--model",
-    default="deit_small",
+    default="deit_tiny",
     choices=[
         "deit_tiny",  # soft 15, gelu 23
         "deit_small",  # soft 15, gelu 29
@@ -45,17 +45,17 @@ parser.add_argument(
     help="path to save log and quantized model",
 )
 parser.add_argument("--calib_batchsize", default=32, type=int)
-parser.add_argument("--calib_images", default=1024, type=int)
+parser.add_argument("--calib_images", default=32, type=int)
 parser.add_argument("--val_batchsize", default=128, type=int)
 parser.add_argument("--num_workers", default=8, type=int)
 
 parser.add_argument("--intsoftmax_exp_n", default=15, type=int)
-parser.add_argument("--intgelu_exp_n", default=29, type=int)
+parser.add_argument("--intgelu_exp_n", default=23, type=int)
 
 
 parser.add_argument(
     "--attn_quant",
-    default="Log2Quantizer",
+    default="Log2_half_Quantizer",
     choices=[
         "Symmetric_UINT4",
         "Symmetric_UINT8",
@@ -212,9 +212,7 @@ def validate(args, val_loader, model, criterion, device):
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
-        # if i == 10:
-        #     progress.display(i)
-        #     break
+
         if i % args.print_freq == 0:
             progress.display(i)
     progress.display(i)

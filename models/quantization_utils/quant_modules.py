@@ -581,19 +581,8 @@ class Log2_half_Quantizer(nn.Module):
         return f"{self.__class__.__name__}(activation_bit={self.activation_bit}"
 
     def int_log_quant_10x(self, x):
-        # """int log2 approximation"""
-
-        # log2_int = x.log2().floor().to(torch.int32)
-        # residual = x - 2 ** (log2_int)
-
-        # halfover = torch.where(
-        #     residual >= 2 ** (log2_int - 1), torch.tensor(5), torch.tensor(0)
-        # ).to(x.device)
-        # out = -1 * (log2_int * 10 + halfover)
-        # out[out == -5] = 0
-        # return out
-
         x = x.to(torch.int32)
+        zero_mask = x == 0
         log2_int = torch.full_like(x, -1, dtype=torch.int32)
 
         temp_x = x.clone()
@@ -609,56 +598,62 @@ class Log2_half_Quantizer(nn.Module):
         temp_x = temp_x << 1  # temp_x *= 2
         fractional_add += (temp_x >= (1 << log2_int)).to(torch.int32) * 5
         out = -1 * (log2_int * 10 + fractional_add)
-        out[out == -5] = 0
+        out[zero_mask] = 99999
         return out
 
     def int_log_dequant_10x(self, y):
+        zero_mask = y == 99999
         y = -y
-        """This OP requires the FP computation"""
+
         int_part = y // 10
         frac_part = y % 10 / 5
 
-        int_num = 2**int_part
-        frac_num = frac_part * 2 ** (int_part - 1)
-        return (int_num + frac_num).floor()
+        int_num = 1 << int_part
+        frac_num = frac_part * (1 << (int_part - 1))
+        out = (int_num + frac_num).floor()
+        out[zero_mask] = 0
+        return out
 
     def forward(self, x_hat: torch.Tensor, s_x: torch.Tensor):
         assert 0 <= x_hat.min() and x_hat.max() <= 1, f"{x_hat.min()} {x_hat.max()}"
 
         x_int = round_ste.apply(x_hat / s_x)
 
-        # [1] add bias for avoid Inf
-        # x_int = (x_int + self.int_bias).round()
-
-        # [2] log quantization in huge domain
+        # [1] log quantization in huge domain
         x_int_log_q = self.int_log_quant_10x(x_int)
         # print(x_int_log_q.unique().numel(), x_int_log_q.unique())
-        # tensor([-155, -150, -145, -140, -135, -130, -125, -120, -115, -110, -105, -100,
-        #     -95,  -90,  -85,  -80,  -75,  -70,  -65,  -60,  -55,  -50,  -45,  -40,
-        #     -35,  -30,  -25,  -20,  -15,  -10,    0], device='cuda:0',
-        # dtype=torch.int32)
+        # 32 tensor([ -155,  -150,  -145,  -140,  -135,  -130,  -125,  -120,  -115,  -110,
+        #          -105,  -100,   -95,   -90,   -85,   -80,   -75,   -70,   -65,   -60,
+        #           -55,   -50,   -45,   -40,   -35,   -30,   -25,   -20,   -15,   -10,
+        #             0, 99999]
 
-        # [3] log dequantization
+        # [2] log dequantization
         x_int_log_dq = self.int_log_dequant_10x(x_int_log_q)
-        x_int_log_dq[x_int_log_dq == 1] = 0
+
         # print(x_int_log_dq.unique().numel(), x_int_log_dq.unique())
-        # 31 tensor([0.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00, 8.0000e+00,
-        #         1.2000e+01, 1.6000e+01, 2.4000e+01, 3.2000e+01, 4.8000e+01, 6.4000e+01,
-        #         9.6000e+01, 1.2800e+02, 1.9200e+02, 2.5600e+02, 3.8400e+02, 5.1200e+02,
-        #         7.6800e+02, 1.0240e+03, 1.5360e+03, 2.0480e+03, 3.0720e+03, 4.0960e+03,
-        #         6.1440e+03, 8.1920e+03, 1.2288e+04, 1.6384e+04, 2.4576e+04, 3.2768e+04,
-        #         4.9152e+04], device='cuda:0')
+        # 32 tensor([0.0000e+00, 1.0000e+00, 2.0000e+00, 3.0000e+00, 4.0000e+00, 6.0000e+00,
+        #         8.0000e+00, 1.2000e+01, 1.6000e+01, 2.4000e+01, 3.2000e+01, 4.8000e+01,
+        #         6.4000e+01, 9.6000e+01, 1.2800e+02, 1.9200e+02, 2.5600e+02, 3.8400e+02,
+        #         5.1200e+02, 7.6800e+02, 1.0240e+03, 1.5360e+03, 2.0480e+03, 3.0720e+03,
+        #         4.0960e+03, 6.1440e+03, 8.1920e+03, 1.2288e+04, 1.6384e+04, 2.4576e+04,
+        #         3.2768e+04, 4.9152e+04], device='cuda:0')
 
-        # [4] [0, 255]
-        div = x_int_log_dq.max() // x_int_log_dq.unique()[-16]
-        x_int_log_dq = x_int_log_dq // div
+        # [3] [0, 255]
+        # #  * Prec@1 69.146 Prec@5 89.320
+        # x_int_log_dq = x_int_log_dq * x_int_log_dq.unique()[-16] // x_int_log_dq.max()
+        # out = x_int_log_dq.clamp(0, 255)
 
-        out = x_int_log_dq.clamp(0, 255)
-        assert out.unique().numel() <= self.n_levels
-        # print(out.unique().numel(), out.unique())
-        # 16 tensor([  0.,   1.,   2.,   4.,   5.,   8.,  10.,  16.,  21.,  32.,  42.,  64.,
-        #          85., 128., 170., 255.], device='cuda:0')
-        # print()
+        # ver2.  * Prec@1 69.454 Prec@5 89.464
+        out = x_int_log_dq * 256 // x_int_log_dq.max()
+        if out.unique().numel() > self.n_levels:
+            print(out.unique().numel(), out.unique())
+            out = out // 2
+        out = out.clamp(0, 255)
+        
+        assert (
+            out.unique().numel() <= self.n_levels
+        ), f"{out.unique().numel(), out.unique()}"
+
         s_x = s_x * 255
 
         x_hat = out * s_x
