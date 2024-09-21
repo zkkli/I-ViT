@@ -1,3 +1,402 @@
+finding best hyper parameter
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+IntSoftmax | n:  13
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  4.109 ( 4.109)	Acc@1  91.41 ( 91.41)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.734 ( 1.949)	Acc@1  65.62 ( 81.75)	Acc@5  88.28 ( 94.03)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 81.747 Prec@5 94.034
+Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=13, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+IntSoftmax | n:  13
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  3.755 ( 3.755)    Acc@1  90.62 ( 90.62)   Acc@5  96.09 ( 96.09)
+Test: [ 50/391] Time  1.739 ( 1.775)    Acc@1  89.84 ( 68.77)   Acc@5  98.44 ( 86.64)
+Test: [100/391] Time  1.739 ( 1.757)    Acc@1  60.94 ( 64.20)   Acc@5  86.72 ( 85.33)
+Test: [150/391] Time  1.736 ( 1.751)    Acc@1  60.94 ( 64.42)   Acc@5  87.50 ( 85.54)
+Test: [200/391] Time  1.736 ( 1.747)    Acc@1  42.19 ( 62.35)   Acc@5  70.31 ( 83.80)
+Test: [250/391] Time  1.737 ( 1.746)    Acc@1  72.66 ( 61.36)   Acc@5  84.38 ( 83.07)
+Test: [300/391] Time  1.741 ( 1.744)    Acc@1  76.56 ( 60.58)   Acc@5  89.84 ( 82.33)
+Test: [350/391] Time  1.739 ( 1.743)    Acc@1  61.72 ( 60.03)   Acc@5  88.28 ( 81.88)
+Test: [390/391] Time  1.219 ( 1.742)    Acc@1  26.25 ( 59.91)   Acc@5  55.00 ( 81.75)
+ * Prec@1 59.914 Prec@5 81.752
+Time: 704.60
+
+
+IntSoftmax | n:  17
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.699 ( 3.699)	Acc@1  91.41 ( 91.41)	Acc@5  96.09 ( 96.09)
+Test: [ 10/391]	Time  1.747 ( 1.924)	Acc@1  61.72 ( 79.97)	Acc@5  84.38 ( 93.25)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 79.972 Prec@5 93.253
+ Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=17, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+IntSoftmax | n:  17
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  3.861 ( 3.861)    Acc@1  89.06 ( 89.06)   Acc@5  97.66 ( 97.66)
+Test: [ 50/391] Time  1.738 ( 1.779)    Acc@1  90.62 ( 67.82)   Acc@5  96.09 ( 86.09)
+Test: [100/391] Time  1.738 ( 1.759)    Acc@1  57.81 ( 63.09)   Acc@5  85.16 ( 84.40)
+Test: [150/391] Time  1.737 ( 1.751)    Acc@1  61.72 ( 63.40)   Acc@5  89.06 ( 84.74)
+Test: [200/391] Time  1.736 ( 1.748)    Acc@1  46.09 ( 61.37)   Acc@5  69.53 ( 83.07)
+Test: [250/391] Time  1.737 ( 1.746)    Acc@1  76.56 ( 60.45)   Acc@5  86.72 ( 82.33)
+Test: [300/391] Time  1.737 ( 1.744)    Acc@1  70.31 ( 59.64)   Acc@5  89.06 ( 81.63)
+Test: [350/391] Time  1.738 ( 1.743)    Acc@1  53.91 ( 59.16)   Acc@5  85.16 ( 81.09)
+Test: [390/391] Time  1.218 ( 1.741)    Acc@1  22.50 ( 58.99)   Acc@5  55.00 ( 80.93)
+ * Prec@1 58.990 Prec@5 80.930
+Time: 704.54
+
+IntSoftmax | n:  11
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.900 ( 3.900)	Acc@1  89.84 ( 89.84)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.737 ( 1.933)	Acc@1  64.06 ( 81.89)	Acc@5  85.94 ( 94.39)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 81.889 Prec@5 94.389
+Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=11, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+IntSoftmax | n:  11
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  3.845 ( 3.845)    Acc@1  87.50 ( 87.50)   Acc@5  96.09 ( 96.09)
+Test: [ 50/391] Time  1.748 ( 1.784)    Acc@1  90.62 ( 67.49)   Acc@5  97.66 ( 85.91)
+Test: [100/391] Time  1.752 ( 1.767)    Acc@1  57.03 ( 63.20)   Acc@5  88.28 ( 84.49)
+Test: [150/391] Time  1.752 ( 1.762)    Acc@1  55.47 ( 63.34)   Acc@5  88.28 ( 84.94)
+Test: [200/391] Time  1.748 ( 1.759)    Acc@1  40.62 ( 61.40)   Acc@5  70.31 ( 83.21)
+Test: [250/391] Time  2.604 ( 1.814)    Acc@1  79.69 ( 60.50)   Acc@5  88.28 ( 82.47)
+Test: [300/391] Time  3.576 ( 2.086)    Acc@1  72.66 ( 59.80)   Acc@5  84.38 ( 81.80)
+Test: [350/391] Time  3.576 ( 2.298)    Acc@1  61.72 ( 59.28)   Acc@5  83.59 ( 81.29)
+Test: [390/391] Time  2.585 ( 2.427)    Acc@1  18.75 ( 59.12)   Acc@5  53.75 ( 81.14)
+ * Prec@1 59.120 Prec@5 81.144
+Time: 972.88
+
+ IntSoftmax | n:  21
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  4.077 ( 4.077)	Acc@1  89.84 ( 89.84)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.736 ( 1.949)	Acc@1  63.28 ( 80.04)	Acc@5  85.94 ( 93.68)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 80.043 Prec@5 93.679
+ Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=21, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+IntSoftmax | n:  21
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  5.800 ( 5.800)    Acc@1  85.94 ( 85.94)   Acc@5  95.31 ( 95.31)
+Test: [ 50/391] Time  3.578 ( 3.623)    Acc@1  89.84 ( 66.33)   Acc@5  96.09 ( 85.26)
+Test: [100/391] Time  3.576 ( 3.600)    Acc@1  58.59 ( 61.52)   Acc@5  84.38 ( 83.62)
+Test: [150/391] Time  2.593 ( 3.422)    Acc@1  54.69 ( 62.00)   Acc@5  89.06 ( 83.96)
+Test: [200/391] Time  3.577 ( 3.376)    Acc@1  39.84 ( 59.85)   Acc@5  64.06 ( 82.21)
+Test: [250/391] Time  3.576 ( 3.416)    Acc@1  75.78 ( 58.97)   Acc@5  83.59 ( 81.34)
+Test: [300/391] Time  3.574 ( 3.443)    Acc@1  73.44 ( 58.26)   Acc@5  88.28 ( 80.66)
+Test: [350/391] Time  3.577 ( 3.462)    Acc@1  61.72 ( 57.88)   Acc@5  86.72 ( 80.20)
+Test: [390/391] Time  2.572 ( 3.471)    Acc@1  21.25 ( 57.68)   Acc@5  53.75 ( 80.04)
+ * Prec@1 57.676 Prec@5 80.040
+Time: 1416.24
+
+ IntSoftmax | n:  22
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.932 ( 3.932)	Acc@1  89.06 ( 89.06)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.731 ( 1.931)	Acc@1  61.72 ( 79.83)	Acc@5  82.81 ( 92.83)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 79.830 Prec@5 92.827
+Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=22, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+IntSoftmax | n:  22
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  5.793 ( 5.793)    Acc@1  85.94 ( 85.94)   Acc@5  95.31 ( 95.31)
+Test: [ 50/391] Time  3.577 ( 3.620)    Acc@1  86.72 ( 66.15)   Acc@5  94.53 ( 84.87)
+Test: [100/391] Time  3.577 ( 3.599)    Acc@1  60.16 ( 61.94)   Acc@5  86.72 ( 83.45)
+Test: [150/391] Time  3.576 ( 3.591)    Acc@1  53.12 ( 62.27)   Acc@5  87.50 ( 84.01)
+Test: [200/391] Time  3.576 ( 3.587)    Acc@1  39.06 ( 59.96)   Acc@5  66.41 ( 82.08)
+Test: [250/391] Time  1.736 ( 3.383)    Acc@1  71.09 ( 58.96)   Acc@5  82.81 ( 81.13)
+Test: [300/391] Time  1.738 ( 3.110)    Acc@1  73.44 ( 58.07)   Acc@5  87.50 ( 80.29)
+Test: [350/391] Time  1.737 ( 2.914)    Acc@1  64.06 ( 57.54)   Acc@5  85.94 ( 79.73)
+Test: [390/391] Time  1.220 ( 2.792)    Acc@1  18.75 ( 57.29)   Acc@5  57.50 ( 79.51)
+ * Prec@1 57.292 Prec@5 79.514
+Time: 1150.57
+
+ IntSoftmax | n:  24
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.908 ( 3.908)	Acc@1  89.06 ( 89.06)	Acc@5  95.31 ( 95.31)
+Test: [  8/391]	Time  1.733 ( 1.975)	Acc@1  66.41 ( 78.21)	Acc@5  87.50 ( 93.23)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 78.212 Prec@5 93.229
+ Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=24, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+IntSoftmax | n:  24
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  5.130 ( 5.130)    Acc@1  80.47 ( 80.47)   Acc@5  97.66 ( 97.66)
+Test: [ 50/391] Time  3.577 ( 3.495)    Acc@1  83.59 ( 58.41)   Acc@5  89.84 ( 79.44)
+Test: [100/391] Time  3.574 ( 3.536)    Acc@1  43.75 ( 52.57)   Acc@5  67.19 ( 75.85)
+Test: [150/391] Time  3.576 ( 3.548)    Acc@1  50.78 ( 52.69)   Acc@5  81.25 ( 76.11)
+Test: [200/391] Time  3.574 ( 3.555)    Acc@1  28.12 ( 51.25)   Acc@5  57.03 ( 74.97)
+Test: [250/391] Time  3.575 ( 3.559)    Acc@1  64.84 ( 50.59)   Acc@5  75.78 ( 74.25)
+Test: [300/391] Time  3.576 ( 3.562)    Acc@1  66.41 ( 49.97)   Acc@5  80.47 ( 73.67)
+Test: [350/391] Time  3.574 ( 3.564)    Acc@1  50.00 ( 49.60)   Acc@5  71.88 ( 73.31)
+Test: [390/391] Time  2.596 ( 3.563)    Acc@1  23.75 ( 49.62)   Acc@5  53.75 ( 73.24)
+ * Prec@1 49.622 Prec@5 73.238
+Time: 1426.38
+
+ IntSoftmax | n:  19
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.954 ( 3.954)	Acc@1  88.28 ( 88.28)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.732 ( 1.933)	Acc@1  64.84 ( 81.32)	Acc@5  92.19 ( 94.39)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 81.321 Prec@5 94.389
+ Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=1024, val_batchsize=128, num_workers=8, intsoftmax_exp_n=19, intgelu_exp_n=30, attn_quant='NoQuant')
+Model: deit_base_patch16_224
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+IntSoftmax | n:  19
+IntGELU    | n:  30
+    Number of QuantLinear: 49
+    Number of QuantConv2d: 1
+    Number of QuantAct: 137
+    Number of IntLayerNorm: 25
+    Number of IntGELU: 12
+    Number of IntSoftmax: 12
+    Number of Log2_Quantizer: 0
+    - type : NoQuant
+    Number of QuantMatMul: 24
+................................calib done
+Test: [  0/391] Time  5.640 ( 5.640)    Acc@1  58.59 ( 58.59)   Acc@5  85.94 ( 85.94)
+Test: [ 50/391] Time  3.577 ( 3.611)    Acc@1  65.62 ( 54.78)   Acc@5  77.34 ( 75.95)
+Test: [100/391] Time  3.574 ( 3.594)    Acc@1  56.25 ( 54.27)   Acc@5  85.94 ( 77.42)
+Test: [150/391] Time  3.574 ( 3.587)    Acc@1  48.44 ( 55.04)   Acc@5  75.00 ( 78.39)
+Test: [200/391] Time  3.575 ( 3.584)    Acc@1  26.56 ( 52.39)   Acc@5  54.69 ( 75.67)
+Test: [250/391] Time  3.574 ( 3.582)    Acc@1  50.78 ( 51.21)   Acc@5  60.94 ( 74.29)
+Test: [300/391] Time  3.584 ( 3.582)    Acc@1  56.25 ( 50.47)   Acc@5  72.66 ( 73.46)
+Test: [350/391] Time  3.580 ( 3.581)    Acc@1  57.03 ( 50.07)   Acc@5  80.47 ( 73.01)
+Test: [390/391] Time  1.217 ( 3.551)    Acc@1  20.00 ( 49.79)   Acc@5  46.25 ( 72.64)
+ * Prec@1 49.786 Prec@5 72.636
+Time: 1429.51
+
+ IntSoftmax | n:  23
+IntGELU    | n:  30
+.calib done
+Test: [  0/391]	Time  3.882 ( 3.882)	Acc@1  88.28 ( 88.28)	Acc@5  96.88 ( 96.88)
+Test: [ 10/391]	Time  1.734 ( 1.928)	Acc@1  63.28 ( 79.55)	Acc@5  89.06 ( 93.75)
+NAHNAHANAHNANHHNAHNAHNAHNAHNHNAHNAHN
+ * Prec@1 79.545 Prec@5 93.750
+
+
+ ====================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
 Running experiment with attn_quant=NoQuant, intsoftmax_exp_n=0, intgelu_exp_n=0
 Namespace(model='deit_base', dataset='data/ImageNet', nb_classes=1000, device='cuda', print_freq=50, seed=0, output_dir='results/', calib_batchsize=32, calib_images=32, val_batchsize=128, num_workers=8, intsoftmax_exp_n=0, intgelu_exp_n=0, attn_quant='NoQuant')
     Number of QuantLinear: 49
